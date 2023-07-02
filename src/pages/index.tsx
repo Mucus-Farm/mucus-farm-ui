@@ -56,9 +56,9 @@ const Header = () => (
 const Body = () => {
   return (
     <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center'>
-      <p className='text-xs text-white'>{'FROGS'} ARE WINNING</p>
+      <p className='text-xs text-white xl:text-base'>{'FROGS'} ARE WINNING</p>
       <Button className='bg-rose-500 border-2 border-white cursor-pointer'>
-        <p className='text-white font-bold text-lg'>JOIN THE BATTLE</p>
+        <p className='text-white font-bold text-lg xl:text-3xl xl:px-6 xl:py-4'>JOIN THE BATTLE</p>
       </Button>
     </Container>
   )
@@ -68,7 +68,7 @@ const FactionMeter = () => {
   // place logic here for Faction Meter
 
   return (
-    <div className='flex h-2 w-[40rem] mr-4 mt-2'>
+    <div className='flex h-2 mr-2 mt-2 w-full'>
       <div className={`h-full w-[70%] bg-green-400/90`}/>
       <div className={`h-full w-[30%] bg-orange-500/90`}/>
     </div>
@@ -77,10 +77,10 @@ const FactionMeter = () => {
 
 const Footer = () => (
   <footer className='relative z-50 gap-y-2'>
-    <Container className='flex flex-col items-end mb-6'>
+    <Container className='mx-0 ml-auto flex flex-col items-end mb-6 w-[660px] xl:w-[1000px]'>
       <Image
+        className='w-full'
         src={frogDogLogo}
-        width={660}
         alt=""
         unoptimized
       />
@@ -99,23 +99,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-screen flex flex-col justify-center bg-rose-200 py-12 px-6">
-        <section className='relative flex-grow flex flex-col max-h-[720px]'>
+      <main className="min-h-screen flex flex-col justify-center bg-rose-200 py-12 px-6 xl:py-18">
+        <section className='relative flex-grow flex flex-col'>
           <div className='absolute inset-0'>
-            <div className="relative h-full max-w-7xl mx-auto">
-              {/* <div className='absolute bottom-0 left-0 xl:w-[575px]'> */}
-              <div className='absolute bottom-0 left-0'>
+            <div className="relative h-full max-w-7xl xl:max-w-[1600px] mx-auto">
+              <div className='absolute bottom-0 left-0 xl:w-[620px]'>
                 <Image
-                  // className='w-full'
+                  className='w-full'
                   src={frogBigGirl}
                   alt=""
                   unoptimized
                 />
               </div>
 
-              <div className='absolute -top-8 right-0 xl:top-0'>
+              <div className='absolute -top-8 right-0 xl:top-0 xl:w-[620px]'>
                 <Image
-                  // className='w-full'
+                  className='w-full'
                   src={dogBigGirl}
                   alt=""
                   unoptimized
