@@ -100,7 +100,7 @@ export default function Home() {
       </Head>
 
       <main className="min-h-screen flex flex-col justify-center bg-rose-200 py-12 px-6">
-        <section className='relative flex-grow flex flex-col max-h-[680px]'>
+        <section className='relative flex-grow flex flex-col max-h-[720px]'>
           <div className='absolute inset-0'>
             <div className="relative h-full max-w-7xl mx-auto">
               <div className='absolute bottom-0 left-0 xl:w-[575px]'>
