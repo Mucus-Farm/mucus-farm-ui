@@ -1,5 +1,4 @@
 import { type AppType } from "next/app";
-import { api } from "@/utils/api";
 import "@/styles/globals.css";
 import { Goldman } from "@next/font/google";
 
@@ -17,4 +16,4 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   )
 };
 
-export default api.withTRPC(MyApp);
+export default MyApp;

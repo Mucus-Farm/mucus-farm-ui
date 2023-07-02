@@ -57,7 +57,7 @@ const Body = () => {
   return (
     <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center'>
       <p className='text-xs text-white'>{'FROGS'} ARE WINNING</p>
-      <Button className='bg-rose-500 border-2 border-white'>
+      <Button className='bg-rose-500 border-2 border-white cursor-pointer'>
         <p className='text-white font-bold text-lg'>JOIN THE BATTLE</p>
       </Button>
     </Container>
@@ -99,32 +99,32 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="relative flex min-h-screen flex-col bg-rose-200 py-12 px-6">
-        <div className='absolute inset-0'>
-          <div className="relative min-h-screen max-w-7xl mx-auto">
-            <div className='absolute bottom-12 left-12'>
-              <Image
-                className="object-contain"
-                src={frogBigGirl}
-                alt=""
-                unoptimized
-              />
-            </div>
+      <main className="min-h-screen flex flex-col justify-center bg-rose-200 py-12 px-6">
+        <section className='relative flex-grow flex flex-col max-h-[680px]'>
+          <div className='absolute inset-0'>
+            <div className="relative h-full max-w-7xl mx-auto">
+              <div className='absolute bottom-0 left-0 '>
+                <Image
+                  src={frogBigGirl}
+                  alt=""
+                  unoptimized
+                />
+              </div>
 
-            <div className='absolute top-12 right-0'>
-              <Image
-                className="object-fill"
-                src={dogBigGirl}
-                alt=""
-                unoptimized
-              />
+              <div className='absolute -top-8 right-0 xl:top-0'>
+                <Image
+                  src={dogBigGirl}
+                  alt=""
+                  unoptimized
+                />
+              </div> 
             </div> 
           </div> 
-        </div> 
 
-        <Header />
-        <Body />
-        <Footer />
+          <Header />
+          <Body />
+          <Footer />
+        </section>
         <div className='absolute bottom-0 left-0 w-80'>
           <Image className='object-contain' src={footer} alt='' unoptimized />
         </div>
