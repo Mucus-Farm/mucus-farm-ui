@@ -103,18 +103,19 @@ export default function Home() {
         <section className='relative flex-grow flex flex-col max-h-[720px]'>
           <div className='absolute inset-0'>
             <div className="relative h-full max-w-7xl mx-auto">
-              <div className='absolute bottom-0 left-0 xl:w-[575px]'>
+              {/* <div className='absolute bottom-0 left-0 xl:w-[575px]'> */}
+              <div className='absolute bottom-0 left-0'>
                 <Image
-                  className='w-full'
+                  // className='w-full'
                   src={frogBigGirl}
                   alt=""
                   unoptimized
                 />
               </div>
 
-              <div className='absolute -top-8 right-0 xl:top-0 xl:w-[575px]'>
+              <div className='absolute -top-8 right-0 xl:top-0'>
                 <Image
-                  className='w-full'
+                  // className='w-full'
                   src={dogBigGirl}
                   alt=""
                   unoptimized
