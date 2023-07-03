@@ -16,13 +16,13 @@ const Body = () => {
         </h1>
 
         <p className='text-base 2xl:text-2xl indent-4 text-mc-brown'>
-          Step into the world of endless excitement and boundless possibilities with our native token, "Mucus." 
+          Step into the world of endless excitement and boundless possibilities with our native token, &quot;Mucus.&quot;
           Brace yourself for an exhilarating journey as we unveil a series of groundbreaking projects, each offering irresistible rewards. 
         </p>
 
         <p className='text-base 2xl:text-2xl indent-4 text-mc-brown'>
-          We're here to revolutionize the web3 landscape by infusing proven models from successful ventures with 
-          our unique twist. As a hub for both web2 and web3 hybrid products, we're creating an all-encompassing 
+          We&apos;re here to revolutionize the web3 landscape by infusing proven models from successful ventures with 
+          our unique twist. As a hub for both web2 and web3 hybrid products, we&apos;re creating an all-encompassing 
           platform that brings together the best of both worlds. Whether you choose to dive in headfirst or take 
           your time, we guarantee rewards for every participant in our game.
         </p>
