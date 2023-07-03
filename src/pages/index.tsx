@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image"
 
 // components
+import Header from "@/components/Header";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 
@@ -10,47 +11,6 @@ import frogBigGirl from "@/images/frogs-big-girl.png"
 import dogBigGirl from "@/images/dogs-big-girl.png"
 import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
 import footer from "@/images/footer.png"
-
-// Icons
-import Question from "@/images/icons/question"
-import Paper from "@/images/icons/paper"
-import Twitter from "@/images/icons/twitter"
-import Discord from "@/images/icons/discord"
-
-const IconHolder = ({ children }: { children: React.ReactNode }) => (
-  <Button className='px-6 py-2 border-2 border-white rounded-lg bg-amber-800'>
-    {children}
-  </Button>
-)
-
-const Header = () => (
-  <header>
-    <Container>
-      <nav className='relative z-50 flex justify-between'>
-        <div className='flex gap-x-4'>
-          <IconHolder>
-            <Question className='h-4 w-4 xl:h-6 xl:w-6 fill-white' />
-          </IconHolder>
-          <IconHolder>
-            <Paper className='h-4 w-4 xl:h-6 xl:w-6 fill-white' />
-          </IconHolder>
-          <div className='shadow-inner px-6 py-2 rounded-lg'>
-            {123}
-          </div>
-        </div>
-
-        <div className='flex gap-x-4'>
-          <IconHolder>
-            <Twitter className='h-4 w-4 xl:h-6 xl:w-6 fill-white' />
-          </IconHolder>
-          <IconHolder>
-            <Discord className='h-4 w-4 xl:h-6 xl:w-6 fill-white' />
-          </IconHolder>
-        </div>
-      </nav> 
-    </Container> 
-  </header>
-)
 
 const Body = () => {
   return (
@@ -67,7 +27,7 @@ const FactionMeter = () => {
   // place logic here for Faction Meter
 
   return (
-    <div className='flex h-2 mr-2 mt-2 w-full'>
+    <div className='flex h-2 mr-2 mt-6 w-full'>
       <div className={`h-full w-[70%] bg-green-400/90`}/>
       <div className={`h-full w-[30%] bg-orange-500/90`}/>
     </div>
@@ -126,7 +86,7 @@ export default function Home() {
           <Body />
           <Footer />
         </section>
-        <div className='absolute bottom-0 left-0 w-80'>
+        <div className='absolute bottom-0 left-0 w-100'>
           <Image className='object-contain' src={footer} alt='' unoptimized />
         </div>
       </main>
