@@ -14,8 +14,8 @@ export default function Clock() {
   
   if (pathname === '/') {
     return (
-      <div className='shadow-inner px-6 py-2 rounded-lg w-[140px]'>
-        <p className='text-slate-600 text-lg tracking-widest text-center'>
+      <div className='shadow-inner px-6 py-2 rounded-lg w-[165px]'>
+        <p className='text-slate-600 text-xl font-bold tracking-widest'>
           {new Date(time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false })}
         </p> 
       </div>

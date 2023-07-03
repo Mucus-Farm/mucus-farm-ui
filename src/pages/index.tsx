@@ -4,24 +4,13 @@ import Image from "next/image"
 // components
 import Header from "@/components/Header";
 import { Container } from "@/components/Container";
-import { Button } from "@/components/Button";
+import BattleButton from "@/components/BattleButton";
 
 // images
 import frogBigGirl from "@/images/frog-big-girl.png"
 import dogBigGirl from "@/images/dog-big-girl.png"
 import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
 import footer from "@/images/footer.png"
-
-const Body = () => {
-  return (
-    <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center z-50'>
-      <p className='text-xs text-white xl:text-base'>{'FROGS'} ARE WINNING</p>
-      <Button className='bg-mc-pink-300 border-2 border-white cursor-pointer rounded-xl'>
-        <p className='text-white font-bold text-lg xl:text-2xl xl:px-3 xl:py-1'>JOIN THE BATTLE</p>
-      </Button>
-    </Container>
-  )
-}
 
 const FactionMeter = () => {
   // place logic here for Faction Meter
@@ -83,7 +72,9 @@ export default function Home() {
           </div> 
 
           <Header />
-          <Body />
+          <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center z-20'>
+            <BattleButton />
+          </Container>
           <Footer />
         </section>
         <div className='absolute bottom-0 left-0 w-100'>

@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import "@/styles/globals.css";
-import { Goldman } from "@next/font/google";
+import { Goldman } from "next/font/google";
 
 const goldman = Goldman({
   weight: ["400", "700"],
@@ -10,9 +10,16 @@ const goldman = Goldman({
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <main className={`${goldman.variable} font-sans`}>
-      <Component {...pageProps} />
-    </main>
+    <>
+      <style jsx global>{`
+        :root {
+          --font-goldman: ${goldman.style.fontFamily};
+        }
+      `}</style>
+      <main className={`${goldman.variable} font-sans`}>
+        <Component {...pageProps} />
+      </main>
+    </> 
   )
 };
 
