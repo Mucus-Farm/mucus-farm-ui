@@ -7,8 +7,8 @@ import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 
 // images
-import frogBigGirl from "@/images/frogs-big-girl.png"
-import dogBigGirl from "@/images/dogs-big-girl.png"
+import frogBigGirl from "@/images/frog-big-girl.png"
+import dogBigGirl from "@/images/dog-big-girl.png"
 import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
 import footer from "@/images/footer.png"
 
@@ -16,8 +16,8 @@ const Body = () => {
   return (
     <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center z-50'>
       <p className='text-xs text-white xl:text-base'>{'FROGS'} ARE WINNING</p>
-      <Button className='bg-rose-500 border-2 border-white cursor-pointer'>
-        <p className='text-white font-bold text-lg xl:text-2xl xl:px-4 xl:py-2'>JOIN THE BATTLE</p>
+      <Button className='bg-mc-pink-300 border-2 border-white cursor-pointer rounded-xl'>
+        <p className='text-white font-bold text-lg xl:text-2xl xl:px-3 xl:py-1'>JOIN THE BATTLE</p>
       </Button>
     </Container>
   )
@@ -58,7 +58,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-screen flex flex-col justify-center bg-rose-200 py-12 px-16 xl:py-18 overflow-x-hidden">
+      <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 py-12 px-16 xl:py-18 overflow-x-hidden">
         <section className='relative flex-grow flex flex-col'>
           <div className='absolute inset-0'>
             <div className="relative h-full max-w-7xl xl:max-w-[1600px] mx-auto">
@@ -71,7 +71,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className='absolute -top-8 -right-6 xl:top-12 w-[40vw]'>
+              <div className='absolute -top-8 -right-6 xl:top-12 w-[32vw]'>
                 <Image
                   className='w-full'
                   src={dogBigGirl}

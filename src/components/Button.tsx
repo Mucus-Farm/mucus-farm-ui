@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 const baseStyles = {
   solid:
-    'group inline-flex items-center justify-center rounded-lg py-2 px-4 min-w-[90px] text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer',
+    'group inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer',
   outline:
-    'group inline-flex ring-1 items-center justify-center rounded-lg py-2 px-4 text-sm focus:outline-none cursor-pointer',
+    'group inline-flex ring-1 items-center justify-center rounded-lg px-4 py-2 text-sm focus:outline-none cursor-pointer',
 }
 
 type ButtonProps = {
@@ -22,7 +22,7 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  className = clsx(
+  className = twMerge(
     baseStyles[variant],
     className
   )
