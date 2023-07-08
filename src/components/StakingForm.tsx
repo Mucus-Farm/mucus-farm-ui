@@ -108,7 +108,7 @@ export default function StakingForm() {
   console.log("desposit: ", deposit);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex-grow flex flex-column'>
       <Container className='flex flex-col p-4 gap-y-10 w-[50vw] mx-0 mr-auto'>
         <div className='flex flex-col bg-mc-rose-300 rounded-xl p-6'>
           <h2 className='text-mc-mahogany-300 text-3xl font-bold tracking-tight text-center'>LETS MAKE A PROMISE</h2>
@@ -121,7 +121,7 @@ export default function StakingForm() {
           </div>
         </div>
 
-        <div className='flex gap-x-10'>
+        <div className='flex-grow flex gap-x-10'>
           <div className='flex flex-col p-6 rounded-xl text-mc-mahogany-300 bg-mc-rose-300'>
             <h3 className='text-lg font-bold tracking-tight'>DEPOSIT</h3>
             <div className='flex flex-col gap-y-2'>
@@ -150,7 +150,7 @@ export default function StakingForm() {
               </div>
             </div>
 
-            <div className='text-mc-mahogany-300/60 mt-8'>
+            <div className='text-mc-mahogany-300/60 mt-8 text-sm'>
               <p>Est.Allocation</p>
               <div className='flex justify-between pl-4'>
                 <p>MUCUS</p>
@@ -163,7 +163,7 @@ export default function StakingForm() {
               <div className='w-full border-b border-b-mc-green-100 border-dashed mt-1' />
             </div>
 
-            <div className='text-mc-mahogany-300/60 mt-16'>
+            <div className='text-mc-mahogany-300/60 mt-12 text-sm'>
               <div className='flex justify-between items-center'>
                 <p>Slippage</p>
                 <SlippageDropdown register={register} />
@@ -171,9 +171,11 @@ export default function StakingForm() {
               <div className='w-full border-b border-b-mc-green-100 border-dashed mt-2'></div>
             </div>
 
-            <Button className='bg-white/50 border border-white text-mc-mahogany-300/60 w-full'>
-              CONNECT WALLET
-            </Button>
+            <div className='flex-grow flex items-end'>
+              <Button className='justify-self-end bg-white/50 border border-white text-mc-mahogany-300/60 w-full'>
+                CONNECT WALLET
+              </Button>
+            </div> 
           </div>
 
           <div className='flex flex-col text-mc-mahogany-300'>

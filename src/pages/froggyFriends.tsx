@@ -9,7 +9,7 @@ import twinChibiImage from "@/images/twin-chibi.png"
 
 export default function FroggyFriends() {
   return (
-    <section className='relative min-h-screen bg-mc-rose-200 p-10'>
+    <section className='relative min-h-screen flex flex-col bg-mc-rose-200 p-10'>
       <Header/>
       <StakingForm/>
 
