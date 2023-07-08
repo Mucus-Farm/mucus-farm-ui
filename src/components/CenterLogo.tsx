@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from "next/router"
+import Link from "next/link";
 import Image from "next/image"
 
 // logos
@@ -20,14 +21,14 @@ export default function CenterLogo() {
   
   if (pathname in paths) {
     return (
-      <div className='w-[125px]'>
+      <Link href='/' className='w-[125px] cursor-pointer'>
         <Image
           className='w-full'
           src={paths[pathname as keyof typeof paths]}
           alt=""
           unoptimized
         />
-      </div>
+      </Link>
     )
   }
 

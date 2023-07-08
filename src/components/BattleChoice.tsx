@@ -22,14 +22,14 @@ export default function BattleChoice({ onClose }: { onClose: () => void }) {
       <div className='flex gap-x-16 mt-16'>
         <div className='flex flex-col'>
           <p className='text-white text-sm'>HELP US PLEASE!</p>
-          <Button className='px-8 py-4 bg-mc-green border-2 border-white'>
+          <Button className='px-8 py-4 bg-mc-green-200 border-2 border-white' href='/froggyFriends'>
             <p className='text-white font-bold text-3xl'>FROG POND</p>
           </Button>
         </div>
 
         <div className='flex flex-col'>
           <p className='text-white text-sm'>WE CAN WIN!</p>
-          <Button className='px-8 py-4 bg-mc-orange-300 border-2 border-white'>
+          <Button className='px-8 py-4 bg-mc-orange-300 border-2 border-white' href='/doggyDomination'>
             <p className='text-white font-bold text-3xl'>DOG PARK</p>
           </Button>
         </div>

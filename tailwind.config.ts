@@ -7,7 +7,19 @@ export default {
     extend: {
       colors: {
         "mc-brown": "#624D4D",
-        "mc-green": "#B7DE7E",
+        "mc-mahogany": {
+          200: "#bba8a8",
+          300: "#8C4848",
+        },
+        "mc-green": {
+          100: "#BBBBA8",
+          200: "#B7DE7E",
+        },
+        "mc-rose": {
+          200: "#F6E7E7",
+          300: "#FDD9D9",
+          400: "#E7C1C1",
+        },
         "mc-pink": {
           200: "#FFD7D7",
           300: "#DE7E7E",
