@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Image from "next/image"
 
 // components
@@ -37,16 +36,8 @@ const MainLogo = () => (
   </footer>
 )
 
-export default function Home() {
-
+export default function Page() {
   return (
-    <>
-      <Head>
-        <title>Mucus Farm</title>
-        <meta name="description" content="Farm Mucus" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden">
         <section className='relative flex-grow flex flex-col'>
           <div className='absolute inset-0'>
@@ -81,6 +72,5 @@ export default function Home() {
           <Image className='object-contain' src={footer} alt='' unoptimized />
         </div>
       </main>
-    </>
   )
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from "next/router"
+import { usePathname } from "next/navigation"
 import Link from "next/link";
 import Image from "next/image"
 
@@ -17,9 +17,9 @@ const paths = {
 }
 
 export default function CenterLogo() {
-  const { pathname } = useRouter()
+  const pathname = usePathname()
   
-  if (pathname in paths) {
+  if (pathname && pathname in paths) {
     return (
       <Link href='/' className='w-[125px] cursor-pointer'>
         <Image
