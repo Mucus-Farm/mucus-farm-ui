@@ -1,4 +1,4 @@
-import { UseFormRegister } from "react-hook-form";
+import { type UseFormRegister } from "react-hook-form";
 import { twMerge } from "tailwind-merge"
 
 type NumberInputProps = Partial<React.DOMAttributes<HTMLInputElement> & React.InputHTMLAttributes<HTMLInputElement>> & {
@@ -18,7 +18,7 @@ export function NumberInput({ className, name, register, ...props}: NumberInputP
       minLength={1}
       maxLength={79}
       spellCheck='false'
-      className={twMerge('p-0 m-0 outline-none border-none focus:outline-none text-white placeholder-white/60 text-xl font-bold w-full h-[24px] bg-transparent', className)}
+      className={twMerge('p-0 m-0 outline-none border-none focus:outline-none text-white placeholder-white/60 xl:text-lg 2xl:text-xl font-bold w-full h-[24px] bg-transparent', className)}
       {...props}
     />
   )

@@ -16,16 +16,16 @@ const FactionMeter = () => {
   // place logic here for Faction Meter
 
   return (
-    <div className='flex h-2 mr-2 mt-6 w-full'>
+    <div className='flex h-2 mr-2 mt-4 w-full'>
       <div className={`h-full w-[70%] bg-green-400/90`}/>
       <div className={`h-full w-[30%] bg-orange-500/90`}/>
     </div>
   )
 }
 
-const Footer = () => (
+const MainLogo = () => (
   <footer className='relative z-50 gap-y-2'>
-    <Container className='mx-0 ml-auto flex flex-col items-end mb-10 w-[50vw]'>
+    <Container className='mx-0 ml-auto flex flex-col items-end mb-12 w-[50vw]'>
       <Image
         className='w-full'
         src={frogDogLogo}
@@ -47,11 +47,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 py-12 px-16 xl:py-18 overflow-x-hidden">
+      <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden">
         <section className='relative flex-grow flex flex-col'>
           <div className='absolute inset-0'>
             <div className="relative h-full max-w-7xl xl:max-w-[1600px] mx-auto">
-              <div className='absolute bottom-0 left-0 w-[40vw]'>
+              <div className='absolute bottom-6 left-10 w-[40vw] 2xl:left-0'>
                 <Image
                   className='w-full'
                   src={frogBigGirl}
@@ -60,7 +60,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className='absolute -top-8 -right-6 xl:top-12 w-[32vw]'>
+              <div className='absolute top-12 right-16 xl:top-20 xl:right-12 w-[32vw]'>
                 <Image
                   className='w-full'
                   src={dogBigGirl}
@@ -75,7 +75,7 @@ export default function Home() {
           <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center z-20'>
             <BattleButton />
           </Container>
-          <Footer />
+          <MainLogo />
         </section>
         <div className='absolute bottom-0 left-0 w-100'>
           <Image className='object-contain' src={footer} alt='' unoptimized />
