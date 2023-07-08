@@ -1,12 +1,15 @@
+import { UseFormRegister } from "react-hook-form";
 import { twMerge } from "tailwind-merge"
 
-type NumberInputProps = React.DOMAttributes<HTMLInputElement> & React.InputHTMLAttributes<HTMLInputElement> & {
+type NumberInputProps = Partial<React.DOMAttributes<HTMLInputElement> & React.InputHTMLAttributes<HTMLInputElement>> & {
   className?: string;
+  name: string;
+  register: UseFormRegister<any>;
 }
-export function NumberInput({ className, ...props}: NumberInputProps) {
+export function NumberInput({ className, name, register, ...props}: NumberInputProps) {
   return (
     <input
-      name='deposit'
+      {...register(name)}
       type='text'
       inputMode="decimal"
       autoComplete='off'

@@ -13,14 +13,14 @@ export default function FroggyFriends() {
       <Header/>
       <StakingForm/>
 
-      {/* <div className='absolute top-1/2 -translate-y-1/2 right-16 w-[42vw]'>
+      <div className='absolute top-1/2 -translate-y-1/2 right-16 w-[45vw]'>
         <Image
           className='w-full'
           src={twinChibiImage}
           alt=""
           unoptimized
         />
-      </div> */}
+      </div>
     </section>
   )
 }

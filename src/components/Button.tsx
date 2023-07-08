@@ -30,6 +30,6 @@ export function Button({
   return href ? (
     <Link href={href} className={className} {...props} >{children}</Link>
   ) : (
-    <button className={className} {...props} >{children}</button>
+    <button className={className} type='button' {...props} >{children}</button>
   )
 }
