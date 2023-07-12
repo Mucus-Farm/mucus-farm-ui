@@ -5,14 +5,10 @@ import { usePathname } from 'next/navigation'
 
 export default function Clock() {
   const pathname = usePathname()
-  const [time, setTime] = useState<Date | null>(null)
+  const [time, setTime] = useState<Date>(new Date())
 
   useEffect(() => {
     setInterval(() => setTime(new Date()), 1000)
-  }, [])
-
-  useEffect(() => {
-    setTime(new Date())
   }, [])
   
   if (pathname === '/') {
