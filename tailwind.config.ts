@@ -6,7 +6,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        "mc-brown": "#624D4D",
+        "mc-brown": {
+          300: "#624D4D",
+          400: "#4E3939",
+        },
         "mc-mahogany": {
           200: "#bba8a8",
           300: "#8C4848",

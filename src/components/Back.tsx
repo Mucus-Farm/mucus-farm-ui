@@ -9,7 +9,7 @@ type IconHolderProps = {
   onClick?: () => void;
 }
 const IconHolder = ({ children, href, onClick }: IconHolderProps) => (
-  <Button className='px-6 py-2 border-2 border-white rounded-lg bg-mc-brown' href={href} onClick={onClick} >
+  <Button className='px-6 py-2 border-2 border-white rounded-lg bg-mc-brown-300' href={href} onClick={onClick} >
     {children}
   </Button>
 )

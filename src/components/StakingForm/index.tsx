@@ -2,12 +2,13 @@
 
 import { Suspense } from 'react';
 import { useForm, useFormContext, FormProvider, type SubmitHandler } from 'react-hook-form'
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useAccount } from 'wagmi';
 
 // components
 import { Container } from "@/components/Container"
 import { Button } from "@/components/Button"
 import { SlippageDropdown } from './SlippageDropdown'
+import { ConnectButton } from '@/components/ConnectButton'
 import * as Skeleton from './Skeleton'
 
 // inputs
@@ -42,6 +43,7 @@ const Deposit = () => {
   const ethAmount = 0.000
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
+  const { address } = useAccount()
   const { data: USDCPrice } = useQuery(['fetchUSDCPrice'], fetchUSDCPrice, { suspense: true })
 
   const { register, watch } = useFormContext<Inputs>()
@@ -100,9 +102,10 @@ const Deposit = () => {
       </div>
 
       <div className='flex-grow flex items-end'>
-        <Button className='justify-self-end bg-white/50 border border-white text-mc-mahogany-300/60 w-full mt-4'>
-          CONNECT WALLET
-        </Button>
+        {address 
+          ? <Button className='justify-self-end bg-white/50 border border-white text-mc-mahogany-300/60 w-full mt-4' >DEPOSIT</Button>
+          : <ConnectButton className='justify-self-end bg-white/50 border border-white text-mc-mahogany-300/60 w-full mt-4' loadingClassName='bg-mc-rose-400'/> 
+        }
       </div> 
     </div>
   )
