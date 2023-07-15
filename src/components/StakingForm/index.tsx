@@ -120,7 +120,7 @@ const Deposit = () => {
           <div className='flex justify-between items-center rounded-xl px-4 2xl:h-16 h-12 bg-mc-mahogany-200'>
             <div className='flex flex-col'>
               <NumberInput name='deposit' register={register} />
-              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^(0|[1-9][0-9]*)$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
                 {currencyFormat.format(Number(deposit) * USDCPrice)}
               </div>
             </div>
@@ -133,7 +133,7 @@ const Deposit = () => {
           <div className='flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-green-100'>
             <div className='flex flex-col'>
               <div className='text-white text-lg 2xl:text-xl font-bold'>{lpTokenAmount}</div>
-              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^(0|[1-9][0-9]*)$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
                 {currencyFormat.format(Number(deposit) * USDCPrice)}
               </div>
             </div>
@@ -203,7 +203,7 @@ export const Withdraw = () => {
         <p className='text-md'>AMOUNT</p>
         <div className='flex flex-col justify-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-mahogany-200 mt-1'>
           <NumberInput name='withdraw' register={register} />
-          <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^(0|[1-9][0-9]*)$/.test(withdraw) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+          <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(withdraw) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
             {currencyFormat.format(Number(withdraw) * USDCPrice)}
           </div>
         </div>
