@@ -1,11 +1,22 @@
-import { ChainId, Token, WETH, Fetcher, Route } from '@uniswap/sdk'
+import { getPublicClient } from 'wagmi/actions' // TODO: if shifting this over as an api route, initialize own viem client
+import { formatUnits } from 'viem'
+import { pairAbi } from '@/abis/pair'
+
+// USDC/WETH pair address
+// 0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc
+
+const MAINNET = 1;
 
 export const fetchUSDCPrice = async () => {
-  const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6)
+  const publicClient = getPublicClient({ chainId: MAINNET });
+  const [USDCReserve, WETHReserve] = await publicClient.readContract({
+    address: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
+    abi: pairAbi,
+    functionName: 'getReserves',
+  })
 
-  const pair = await Fetcher.fetchPairData(USDC, WETH[USDC.chainId])
+  const USDCReserveFloat = parseFloat(formatUnits(USDCReserve, 6))
+  const WETHReserveFloat = parseFloat(formatUnits(WETHReserve, 18))
 
-  const route = new Route([pair], WETH[USDC.chainId])
-
-  return route.midPrice.toSignificant(6);
+  return USDCReserveFloat / WETHReserveFloat
 }

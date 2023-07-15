@@ -19,6 +19,7 @@ export default function FroggyFriends() {
           src={twinChibiImage}
           alt=""
           unoptimized
+          priority
         />
       </div>
     </section>

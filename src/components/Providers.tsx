@@ -14,11 +14,13 @@ import {
   goerli,
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 const { chains, publicClient } = configureChains(
   [mainnet, goerli],
   [
-    publicProvider()
+    publicProvider(),
+    alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY })
   ]
 );
 

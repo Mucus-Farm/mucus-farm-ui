@@ -14,6 +14,8 @@ export const UserStats = () => {
   )
 }
 
+export const ConnectOrDepositButton = () => <div className='h-6 w-full bg-mc-rose-400 rounded-full animate-pulse' /> 
+
 export const Deposit = () => {
   return (
     <div className='basis-3/5 flex flex-col p-4 rounded-xl text-mc-mahogany-300 bg-mc-rose-300'>
@@ -51,7 +53,7 @@ export const Deposit = () => {
       </div>
 
       <div className='flex-grow flex items-end'>
-        <div className='h-6 w-full bg-mc-rose-400 rounded-full animate-pulse' />
+        <ConnectOrDepositButton />
       </div> 
     </div>
   )
