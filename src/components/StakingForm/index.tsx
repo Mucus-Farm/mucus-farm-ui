@@ -18,7 +18,7 @@ import * as Skeleton from './Skeleton'
 import { NumberInput } from "@/components/inputs/NumberInput"
 
 // api
-import { fetchUSDCPrice } from './uniswapMethods';
+import { fetchMucusEthPrice, fetchUsdcPrice } from './uniswapMethods';
 
 const UserStats = () => {
   const totalDeposited = 12490
@@ -56,15 +56,13 @@ const depositInputs = z.object({
 })
 export type DepositInputs = z.infer<typeof depositInputs>
 const Deposit = () => {
-  const lpTokenAmount = 0.000
-  const mucusAmount = 0.000
-  const ethAmount = 0.000
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
   const { address } = useAccount()
   const { data: balance } = useBalance({ address })
   const { chain } = useNetwork()
-  const { data: USDCPrice } = useQuery(['fetchUSDCPrice'], fetchUSDCPrice, { suspense: true, cacheTime: 0 })
+  const { data: usdcPrice } = useQuery(['fetchUsdcPrice'], fetchUsdcPrice, { suspense: true, cacheTime: 0 })
+  const { data: mucusEthPrice } = useQuery(['fetchMucusEthPrice'], fetchMucusEthPrice, { suspense: true, cacheTime: 0 })
 
   const methods = useForm<DepositInputs>({
     defaultValues: {
@@ -109,7 +107,7 @@ const Deposit = () => {
     return false
   }
 
-  if (!USDCPrice) return null
+  if (!usdcPrice || !mucusEthPrice) return null
   return (
     <FormProvider {...methods} >
       <form className='flex flex-col p-4 rounded-xl text-mc-mahogany-300 bg-mc-rose-300' onSubmit={handleSubmit(onSubmit)}>
@@ -121,7 +119,7 @@ const Deposit = () => {
             <div className='flex flex-col'>
               <NumberInput name='deposit' register={register} />
               <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-                {currencyFormat.format(Number(deposit) * USDCPrice)}
+                {currencyFormat.format(Number(deposit) * usdcPrice)}
               </div>
             </div>
             <div className='rounded-xl border border-white px-2 py-1 text-white text-sm 2xl:text-lg'>ETH</div>
@@ -132,10 +130,10 @@ const Deposit = () => {
           <p className='text-md'>TO</p>
           <div className='flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-green-100'>
             <div className='flex flex-col'>
-              <div className='text-white text-lg 2xl:text-xl font-bold'>{lpTokenAmount}</div>
-              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-                {currencyFormat.format(Number(deposit) * USDCPrice)}
-              </div>
+              <div className='text-white text-lg 2xl:text-xl font-bold'>{Number(deposit) * mucusEthPrice}</div>
+              {/* <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+                {currencyFormat.format(usdcPrice / mucusEthPrice)}
+              </div> */}
             </div>
             <div className='rounded-xl border border-white px-2 py-1 text-white text-sm 2xl:text-lg'>MUCUS/ETH</div>
           </div>
@@ -145,11 +143,11 @@ const Deposit = () => {
           <p>Est.Allocation</p>
           <div className='flex justify-between pl-4'>
             <p>MUCUS</p>
-            <p>{mucusAmount}</p>
+            <p>{Number(deposit) * mucusEthPrice}</p>
           </div>
           <div className='flex justify-between pl-4'>
             <p>ETH</p>
-            <p>{ethAmount}</p>
+            <p>{deposit}</p>
           </div>
           <div className='w-full border-b border-b-mc-green-100 border-dashed mt-1' />
         </div>
@@ -181,7 +179,7 @@ type WithdrawInputs = { withdraw: string }
 export const Withdraw = () => {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
-  const { data: USDCPrice  } = useQuery(['fetchUSDCPrice'], fetchUSDCPrice, { suspense: true, cacheTime: 0 })
+  const { data: UsdcPrice  } = useQuery(['fetchUsdcPrice'], fetchUsdcPrice, { suspense: true, cacheTime: 0 })
 
   const { handleSubmit, register, watch } = useForm<WithdrawInputs>({
     defaultValues: {
@@ -194,7 +192,7 @@ export const Withdraw = () => {
     console.log(data)
   }
 
-  if (!USDCPrice) return null
+  if (!UsdcPrice) return null
   return (
     <form className='flex flex-col text-mc-mahogany-300' onSubmit={handleSubmit(onSubmit)}>
       <div className='bg-mc-rose-300 p-4 rounded-xl'>
@@ -204,7 +202,7 @@ export const Withdraw = () => {
         <div className='flex flex-col justify-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-mahogany-200 mt-1'>
           <NumberInput name='withdraw' register={register} />
           <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(withdraw) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-            {currencyFormat.format(Number(withdraw) * USDCPrice)}
+            {currencyFormat.format(Number(withdraw) * UsdcPrice)}
           </div>
         </div>
 

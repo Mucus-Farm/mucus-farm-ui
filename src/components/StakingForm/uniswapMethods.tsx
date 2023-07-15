@@ -1,16 +1,15 @@
 import { getPublicClient } from 'wagmi/actions' // TODO: if shifting this over as an api route, initialize own viem client
 import { formatUnits } from 'viem'
 import { pairAbi } from '@/abis/pair'
-
-// USDC/WETH pair address
-// 0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc
+import { env } from '@/env.mjs'
 
 const MAINNET = 1;
+const GOERLI = 5;
 
-export const fetchUSDCPrice = async () => {
+export const fetchUsdcPrice = async () => {
   const publicClient = getPublicClient({ chainId: MAINNET });
   const [USDCReserve, WETHReserve] = await publicClient.readContract({
-    address: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
+    address: env.NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS as `0x${string}`,
     abi: pairAbi,
     functionName: 'getReserves',
   })
@@ -19,4 +18,18 @@ export const fetchUSDCPrice = async () => {
   const WETHReserveFloat = parseFloat(formatUnits(WETHReserve, 18))
 
   return USDCReserveFloat / WETHReserveFloat
+}
+
+export const fetchMucusEthPrice = async () => {
+  const publicClient = getPublicClient({ chainId: GOERLI });
+  const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
+    address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
+    abi: pairAbi,
+    functionName: 'getReserves',
+  })
+
+  const MUCUSReserveFloat = parseFloat(formatUnits(MUCUSReserve, 18))
+  const WETHReserveFloat = parseFloat(formatUnits(WETHReserve, 18))
+
+  return MUCUSReserveFloat / WETHReserveFloat
 }

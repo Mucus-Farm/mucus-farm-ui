@@ -20,7 +20,8 @@ const { chains, publicClient } = configureChains(
   [mainnet, goerli],
   [
     publicProvider(),
-    alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY })
+    // alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
+    // alchemy
   ]
 );
 
