@@ -1,16 +1,19 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider, type SubmitHandler } from 'react-hook-form';
 import { useQuery, useAccount, useBalance, useNetwork } from 'wagmi';
+import { formatEther } from 'viem';
 
 // components
 import { Container } from "@/components/Container"
 import { Button } from "@/components/Button"
 import { SlippageDropdown } from './SlippageDropdown'
+import Modal from '@/components/Modal'
+import { AddStakeTransaction, type AddStakeValues } from '@/components/transactions/AddStake'
 import { ConnectButton } from '@/components/ConnectButton'
 import * as Skeleton from './Skeleton'
 
@@ -18,7 +21,7 @@ import * as Skeleton from './Skeleton'
 import { NumberInput } from "@/components/inputs/NumberInput"
 
 // api
-import { fetchMucusEthPrice, fetchUsdcPrice } from './uniswapMethods';
+import { fetchMucusEthPrice, fetchUsdcPrice } from '@/api/uniswapMethods';
 
 const UserStats = () => {
   const totalDeposited = 12490
@@ -58,6 +61,8 @@ export type DepositInputs = z.infer<typeof depositInputs>
 const Deposit = () => {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
+  const [show, setShow] = useState<boolean>(false)
+  const [transactionValues, setTransactionValues] = useState<AddStakeValues | null>(null)
   const { address } = useAccount()
   const { data: balance } = useBalance({ address })
   const { chain } = useNetwork()
@@ -72,21 +77,20 @@ const Deposit = () => {
     resolver: zodResolver(depositInputs),
   })
   const { handleSubmit, register, watch, formState: { errors } } = methods
-  const deposit = watch('deposit')
+  const [deposit, slippage] = watch(['deposit', 'slippage'])
 
   const onSubmit: SubmitHandler<DepositInputs> = (data) => {
     if (depositValidation()) return
-    console.log("gets in here")
-    console.log(data)
+    const { deposit, slippage } = data
+    setTransactionValues({ depositAmount: deposit, faction: 'FROG', slippage })
+    setShow(true)
   }
-
-  console.log("errors: ", errors)
 
   const depositMessage = () => {
     if (!balance || !chain) {
       return 'ISSUE WITH CONNECTING WALLET'
     }
-    if (Number(deposit) > balance.value) {
+    if (Number(deposit) > Number(formatEther(balance.value))) {
       return 'INSUFFICIENT BALANCE'
     }
     if (deposit === '') {
@@ -95,12 +99,18 @@ const Deposit = () => {
     if (Number(deposit) <= 0) {
       return 'MUST BE GREATER THAN ZERO'
     }
+    if (Number(slippage) > 69) {
+      return 'SLIPPAGE TOO HIGH'
+    }
+    if (slippage === '') {
+      return 'ENTER SLIPPAGE'
+    }
 
     return 'DEPOSIT'
   }
 
   const depositValidation = () => {
-    if (!balance || !chain || Number(deposit) > balance.value || Number(deposit) <= 0 || deposit === '' || errors.deposit) {
+    if (!balance || !chain || Number(deposit) > Number(formatEther(balance.value)) || Number(deposit) <= 0 || deposit === '' || errors.deposit || Number(slippage) > 69 || slippage === '' || errors.slippage) {
       return true
     }
 
@@ -111,6 +121,10 @@ const Deposit = () => {
   return (
     <FormProvider {...methods} >
       <form className='flex flex-col p-4 rounded-xl text-mc-mahogany-300 bg-mc-rose-300' onSubmit={handleSubmit(onSubmit)}>
+        <Modal open={show} onClose={() => setShow(false)}>
+          <AddStakeTransaction {...transactionValues!} onClose={() => setShow(false)} />
+        </Modal>
+
         <h3 className='2xl:text-lg xl:text-md font-bold tracking-tight'>DEPOSIT</h3>
 
         <div className='flex flex-col gap-y-2 xl:text-sm 2xl:text-base'>
@@ -118,7 +132,7 @@ const Deposit = () => {
           <div className='flex justify-between items-center rounded-xl px-4 2xl:h-16 h-12 bg-mc-mahogany-200'>
             <div className='flex flex-col'>
               <NumberInput name='deposit' register={register} />
-              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
                 {currencyFormat.format(Number(deposit) * usdcPrice)}
               </div>
             </div>
@@ -131,9 +145,9 @@ const Deposit = () => {
           <div className='flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-green-100'>
             <div className='flex flex-col'>
               <div className='text-white text-lg 2xl:text-xl font-bold'>{Number(deposit) * mucusEthPrice}</div>
-              {/* <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-                {currencyFormat.format(usdcPrice / mucusEthPrice)}
-              </div> */}
+              <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+                {currencyFormat.format(Number(deposit) * usdcPrice)}
+              </div>
             </div>
             <div className='rounded-xl border border-white px-2 py-1 text-white text-sm 2xl:text-lg'>MUCUS/ETH</div>
           </div>
@@ -201,7 +215,7 @@ export const Withdraw = () => {
         <p className='text-md'>AMOUNT</p>
         <div className='flex flex-col justify-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-mahogany-200 mt-1'>
           <NumberInput name='withdraw' register={register} />
-          <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\d*\.?\d*$/.test(withdraw) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+          <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(withdraw) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
             {currencyFormat.format(Number(withdraw) * UsdcPrice)}
           </div>
         </div>
@@ -222,7 +236,6 @@ export const Withdraw = () => {
 }
 
 export default function StakingForm() {
-
   return (
     <Container className='flex-grow flex flex-col p-4 gap-y-6 2xl:gap-y-10 w-[65vw] xl:w-[60vw] 2xl:w-[50vw] mx-0 mr-auto mt-6 xl:mt-8 2xl:mt-12'>
       <Suspense fallback={<Skeleton.UserStats />}>

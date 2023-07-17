@@ -33,3 +33,18 @@ export const fetchMucusEthPrice = async () => {
 
   return MUCUSReserveFloat / WETHReserveFloat
 }
+
+export const fetchMucusAmountOut = async (amountIn: bigint) => {
+  const publicClient = getPublicClient({ chainId: GOERLI });
+  const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
+    address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
+    abi: pairAbi,
+    functionName: 'getReserves',
+  })
+
+  const amountInWithFee = amountIn * BigInt(997);
+  const numerator = amountInWithFee * MUCUSReserve;
+  const denominator = WETHReserve * BigInt(1000) + amountInWithFee;
+
+  return numerator / denominator;
+}  

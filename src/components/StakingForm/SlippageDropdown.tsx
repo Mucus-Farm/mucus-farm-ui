@@ -31,6 +31,7 @@ export function SlippageDropdown() {
   const handleClickOutside = (event: MouseEvent) => {
     if (slippageDropdownRef.current && !slippageDropdownRef.current.contains(event.target as Node)) {
       setShowSlippageDropdown(false)
+      event.preventDefault()
     }
   }
 

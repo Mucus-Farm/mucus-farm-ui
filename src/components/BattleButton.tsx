@@ -12,7 +12,7 @@ import XMark from "@/images/XMark.png"
 
 const BattleChoice = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className='relative flex flex-col p-24'>
+    <div className='relative flex flex-col p-24 rounded-lg bg-mc-pink-300 border-2 border-white'>
       <div className='absolute top-4 right-4 cursor-pointer w-12' onClick={() => onClose()}>
         <Image
           className='w-full'
