@@ -35,8 +35,6 @@ export function useAddStake() {
     const tx = await addStake.writeAsync({ args: [factionEnum[faction], tokenAmountOutMin], value: parseEther(depositAmount) })
     const receipt = await waitForTransaction(tx)
 
-    console.log("tx: ", receipt)
-
     return receipt
   }
 

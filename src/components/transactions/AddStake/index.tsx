@@ -31,7 +31,7 @@ export function AddFrogStakeSuccess() {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-rose-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={frogBigGirl} alt='froggyWait' unoptimized />
-      <p className='text-mc-mahogany-300 text-lg'>SUCCESS</p>
+      <p className='text-mc-mahogany-300 text-lg mt-6'>SUCCESS</p>
     </div>
   )
 }

@@ -5,6 +5,15 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        toast: {
+          '0%, 100%': { opacity: '0', transform: 'translateY(100%)' },
+          '2.5%, 97.5%': { opacity: '1', transform: 'translateY(-1rem)' },
+        },
+      },
+      animation: {
+        toast: 'toast 10s ease-in-out forwards'
+      },
       colors: {
         "mc-brown": {
           300: "#624D4D",
@@ -36,7 +45,7 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-goldman)", ...fontFamily.sans],
-      }
+      },
     },
   },
   plugins: [],

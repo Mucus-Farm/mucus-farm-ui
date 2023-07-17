@@ -16,6 +16,10 @@ import {
 import { publicProvider } from 'wagmi/providers/public';
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 
+// components & hooks
+import useTransactions from '@/hooks/useTransactions';
+import { SuccessToast, FailToast } from "@/components/Toast";
+
 const { chains, publicClient } = configureChains(
   [mainnet, goerli],
   [
@@ -41,10 +45,14 @@ const wagmiConfig = createConfig({
 })
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const { transactionState, errorMessage } = useTransactions((state) => state)
+
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
         {children}
+        {transactionState === 'SUCCESS' && <SuccessToast />}
+        {transactionState === 'FAILED' && <FailToast errorMessage={errorMessage}/>}
       </RainbowKitProvider>
     </WagmiConfig>
   );
