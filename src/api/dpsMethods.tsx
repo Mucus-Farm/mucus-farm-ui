@@ -1,7 +1,78 @@
+'use client'
+
+import { useContractWrite } from 'wagmi'
+import { waitForTransaction } from 'wagmi/actions'
+import { parseEther } from 'viem'
 import { getPublicClient } from 'wagmi/actions' // TODO: if shifting this over as an api route, initialize own viem client
 import { formatUnits } from 'viem'
-import { dpsAbiTypings } from '@/abis/dps'
+
+// utils
 import { env } from '@/env.mjs'
+import { dpsAbi } from '@/abis/dps'
+import { dpsAbiTypings } from '@/abis/dps'
+import { getBasisPointsMultiplier } from '@/utils/helpers'
+import { factionEnum } from '@/utils/constants'
+import type { Faction } from '@/utils/constants'
+
+// api
+import { fetchMucusAmountOut } from '@/api/uniswapMethods'
+
+type AddStake = {
+  depositAmount: string;
+  faction: Faction;
+  slippage: string;
+}
+export function useAddStake() {
+  const addStake = useContractWrite({
+    address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
+    abi: dpsAbi,
+    functionName: 'addStake',
+  })
+
+  const write = async ({ depositAmount, faction, slippage }: AddStake) => {
+    if (!addStake.writeAsync) return
+    const tokenAmountOut = await fetchMucusAmountOut(parseEther(depositAmount))
+
+    const tokenAmountOutMin = tokenAmountOut 
+      * BigInt(Number(slippage) * 10 ** getBasisPointsMultiplier(slippage)) 
+      / BigInt(100 * 10 ** getBasisPointsMultiplier(slippage))
+
+    const tx = await addStake.writeAsync({ args: [factionEnum[faction], tokenAmountOutMin], value: parseEther(depositAmount) })
+    const receipt = await waitForTransaction(tx)
+
+    return receipt
+  }
+
+  return {
+    ...addStake,
+    write,
+  }
+}
+
+type RemoveStake = {
+  withdrawAmount: string;
+  faction: Faction;
+}
+export function useRemoveStake() {
+  const removeStake = useContractWrite({
+    address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
+    abi: dpsAbi,
+    functionName: 'removeStake',
+  })
+
+  const write = async ({ withdrawAmount, faction }: RemoveStake) => {
+    if (!removeStake.writeAsync) return
+    const tx = await removeStake.writeAsync({ args: [parseEther(withdrawAmount), factionEnum[faction]] })
+    const receipt = await waitForTransaction(tx)
+
+    return receipt
+  }
+
+  return {
+    ...removeStake,
+    write,
+  }
+}
 
 export const getStaker = async (stakerAddress: `0x${string}`) => {
   const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
@@ -46,8 +117,6 @@ export const getTotalStaked = async () => {
     totalDogFactionAmountPromise,
     totalFrogFactionAmountPromise,
   ])
-
-  console.log("total dog faction amount: ", totalDogFactionAmount)
 
   return {
     totalDogFactionAmount: parseFloat(formatUnits(totalDogFactionAmount, 18)),

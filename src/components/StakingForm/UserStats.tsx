@@ -7,7 +7,11 @@ import { formatEther } from 'viem'
 import { getStaker, getTotalStaked } from '@/api/dpsMethods';
 import { fetchLPTokenUsdcPrice } from '@/api/uniswapMethods';
 
-type UserStatsProps = { faction: 'DOG' | 'FROG'}
+// utils
+import type { Faction } from '@/utils/constants';
+import { factionColorPalette as fcp } from './index';
+
+export type UserStatsProps = { faction: Faction }
 export default function UserStats({ faction }: UserStatsProps) {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
@@ -21,11 +25,11 @@ export default function UserStats({ faction }: UserStatsProps) {
   const stakerTradingRewards = 4
 
   return (
-    <div className='flex flex-col bg-mc-rose-300 rounded-xl p-6'>
-      <h2 className='text-mc-mahogany-300 font-bold tracking-tight text-center 2xl:text-3xl xl:text-2xl'>LETS MAKE A PROMISE</h2>
+    <div className={`flex flex-col ${fcp[faction].bg} rounded-xl p-6`}>
+      <h2 className={`${fcp[faction].text} font-bold tracking-tight text-center 2xl:text-3xl xl:text-2xl`}>LETS MAKE A PROMISE</h2>
       <p className='text-white text-center 2xl:text-lg xl:text-md'>PROTECT US AND WE OWE YOU</p>
 
-      <div className='flex justify-between mt-6 2xl:mt-12 xl:mt-8 text-mc-mahogany-300 text-sm'>
+      <div className={`flex justify-between mt-6 2xl:mt-12 xl:mt-8 ${fcp[faction].text} text-sm`}>
         <p>Total Deposited <span className='font-bold'>{totalDeposited && lpTokenUsdcPrice ? currencyFormat.format(totalDeposited * lpTokenUsdcPrice) : 'N/A'}</span></p>
         <p>Staker Trading Rewards <span className='font-bold'>{staker ? `${stakerTradingRewards} %` : 'N/A'}</span></p>
         <p>Your Deposit <span className='font-bold'>{userDeposit ? `${Math.floor(Number(formatEther(userDeposit)))} LP` : 'N/A'}</span></p>

@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useQuery, useAccount, useNetwork } from 'wagmi';
-import { formatEther, parseEther } from 'viem';
+import { formatEther } from 'viem';
 
 // components
 import { Button } from "@/components/Button"
@@ -20,9 +20,13 @@ import { NumberInput } from "@/components/inputs/NumberInput"
 import { fetchLPTokenUsdcPrice } from '@/api/uniswapMethods'
 import { getStaker } from '@/api/dpsMethods'
 
+// utils
+import { factionColorPalette as fcp } from './index';
+import type { Faction } from '@/utils/constants'
+
 const withdrawInputs = z.object({ withdraw: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO') })
 type WithdrawInputs = z.infer<typeof withdrawInputs>
-type WithdrawProps = { faction: 'DOG' | 'FROG' }
+export type WithdrawProps = { faction: Faction }
 export default function Withdraw({ faction }: WithdrawProps) {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
@@ -47,7 +51,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
     e?.preventDefault()
     if (withdrawValidation()) return
     const { withdraw } = data
-    setTransactionValues({ withdrawAmount: withdraw, faction: 'FROG' })
+    setTransactionValues({ withdrawAmount: withdraw, faction })
     setShow(true)
   }
 
@@ -86,16 +90,16 @@ export default function Withdraw({ faction }: WithdrawProps) {
   }
 
   return (
-    <form className='flex flex-col text-mc-mahogany-300' onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
+    <form className={`w-1/2 flex flex-col ${fcp[faction].text}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
       <Modal open={show} onClose={() => setShow(false)}>
         <RemoveStakeTransaction {...transactionValues!} onClose={() => setShow(false)}/>
       </Modal>
 
-      <div className='bg-mc-rose-300 p-4 rounded-xl'>
+      <div className={`${fcp[faction].bg} p-4 rounded-xl`}>
         <h3 className='text-md 2xl:text-lg font-bold tracking-tight'>WITHDRAW</h3>
 
         <p className='text-md'>AMOUNT</p>
-        <div className='flex flex-col justify-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-mahogany-200 mt-1'>
+        <div className='flex flex-col justify-center rounded-xl px-4 h-12 2xl:h-16 bg-black/25 mt-1'>
           <NumberInput name='withdraw' register={register} />
           {lpTokenUsdcPrice && (
             <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(withdraw) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
@@ -113,7 +117,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
           </Button>
           <ConnectWrapper>
             <Button 
-              className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 transition-all ${withdrawValidation() ? 'opacity-60' : ''}`}
+              className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 w-full transition-all ${withdrawValidation() ? 'opacity-60' : ''}`}
               type='submit'
             >
               {withdrawMessage()}
@@ -121,10 +125,10 @@ export default function Withdraw({ faction }: WithdrawProps) {
           </ConnectWrapper> 
         </div>
       </div>
-      <p className='text-sm 2xl:text-lg text-center whitespace-nowrap text-mc-mahogany-300 mt-6'>
+      <p className={`text-sm 2xl:text-lg text-center whitespace-nowrap ${fcp[faction].text} mt-6`}>
         YOU MAY QUALIFY FOR A FREE MINT
       </p>
-      <Button className='bg-white/50 border border-white py-4 text-lg 2xl:text-2xl text-mc-mahogany-300 w-full mt-1'>
+      <Button className={`bg-white/50 border border-white py-4 text-lg 2xl:text-2xl ${fcp[faction].text} w-full mt-1`}>
         MUCUS GENERATOR
       </Button>
     </form>

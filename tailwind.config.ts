@@ -15,9 +15,17 @@ export default {
         toast: 'toast 10s ease-in-out forwards'
       },
       colors: {
+        "mc-gray": {
+          200: "#EFE8DD",
+        },
+        "mc-purple": {
+          300: "#EAE1EC",
+          400: "#CFC1D1",
+        },
         "mc-brown": {
           300: "#624D4D",
           400: "#4E3939",
+          500: "#865f66",
         },
         "mc-mahogany": {
           200: "#bba8a8",
@@ -40,6 +48,7 @@ export default {
         "mc-orange": {
           200: "#FDD6AE",
           300: "#EC9244",
+          350: "#ECAD73",
           400: "#F77A48",
         },
       },

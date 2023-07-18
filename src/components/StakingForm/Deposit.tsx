@@ -20,12 +20,17 @@ import { NumberInput } from "@/components/inputs/NumberInput"
 // api
 import { fetchMucusEthPrice, fetchEthUsdcPrice } from '@/api/uniswapMethods';
 
+// utils
+import { factionColorPalette as fcp } from './index';
+import type { Faction } from '@/utils/constants'
+
 const depositInputs = z.object({ 
   deposit: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO'),
   slippage: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO'),
 })
 export type DepositInputs = z.infer<typeof depositInputs>
-export default function Deposit() {
+export type DepositProps = { faction: Faction }
+export default function Deposit({ faction }: DepositProps) {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
   const [show, setShow] = useState<boolean>(false)
@@ -49,7 +54,7 @@ export default function Deposit() {
   const onSubmit: SubmitHandler<DepositInputs> = (data) => {
     if (depositValidation()) return
     const { deposit, slippage } = data
-    setTransactionValues({ depositAmount: deposit, faction: 'FROG', slippage })
+    setTransactionValues({ depositAmount: deposit, faction, slippage })
     setShow(true)
   }
 
@@ -95,7 +100,7 @@ export default function Deposit() {
   if (!usdcPrice || !mucusEthPrice) return null
   return (
     <FormProvider {...methods} >
-      <form className='flex flex-col p-4 rounded-xl text-mc-mahogany-300 bg-mc-rose-300' onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
+      <form className={`w-1/2 flex flex-col p-4 rounded-xl ${fcp[faction].text} ${fcp[faction].bg}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
         <Modal open={show} onClose={() => setShow(false)}>
           <AddStakeTransaction {...transactionValues!} onClose={() => setShow(false)} />
         </Modal>
@@ -104,7 +109,7 @@ export default function Deposit() {
 
         <div className='flex flex-col gap-y-2 xl:text-sm 2xl:text-base'>
           <p className='text-md'>FROM</p>
-          <div className='flex justify-between items-center rounded-xl px-4 2xl:h-16 h-12 bg-mc-mahogany-200'>
+          <div className='flex justify-between items-center rounded-xl px-4 2xl:h-16 h-12 bg-black/25'>
             <div className='flex flex-col'>
               <NumberInput name='deposit' register={register} />
               <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
@@ -117,7 +122,7 @@ export default function Deposit() {
 
         <div className='flex flex-col gap-y-2 mt-4 2xl:mt-8'>
           <p className='text-md'>TO</p>
-          <div className='flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-green-100'>
+          <div className={`flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 ${fcp[faction].mucus}`}>
             <div className='flex flex-col'>
               <div className='text-white text-lg 2xl:text-xl font-bold'>{Math.floor(Number(deposit) * mucusEthPrice)}</div>
               <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
@@ -128,7 +133,7 @@ export default function Deposit() {
           </div>
         </div>
 
-        <div className='text-mc-mahogany-300/60 mt-4 2xl:mt-8 text-sm'>
+        <div className={`${fcp[faction].text}/60 mt-4 2xl:mt-8 text-sm`}>
           <p>Est.Allocation</p>
           <div className='flex justify-between pl-4'>
             <p>MUCUS</p>
@@ -141,10 +146,10 @@ export default function Deposit() {
           <div className='w-full border-b border-b-mc-green-100 border-dashed mt-1' />
         </div>
 
-        <div className='text-mc-mahogany-300/60 mt-4 2xl:mt-12 text-sm'>
+        <div className={`${fcp[faction].text}/60 mt-4 2xl:mt-12 text-sm`}>
           <div className='flex justify-between items-center'>
             <p>Slippage</p>
-            <SlippageDropdown />
+            <SlippageDropdown faction={faction} />
           </div>
           <div className='w-full border-b border-b-mc-green-100 border-dashed mt-2'></div>
         </div>
@@ -152,7 +157,7 @@ export default function Deposit() {
         <div className='flex-grow flex items-end'>
           <ConnectWrapper className='justify-self-end w-full mt-4'>
             <Button 
-              className={`justify-self-end bg-white/50 border border-white text-mc-mahogany-300/60 w-full transition-all mt-4 ${depositValidation() ? 'opacity-60' : ''}`}
+              className={`justify-self-end bg-white/50 border border-white ${fcp[faction].text}/60 w-full transition-all mt-4 ${depositValidation() ? 'opacity-60' : ''}`}
               type='submit'
             >
               {depositMessage()}
