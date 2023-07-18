@@ -43,3 +43,29 @@ export function useAddStake() {
     write,
   }
 }
+
+type RemoveStake = {
+  withdrawAmount: string;
+  faction: 'FROG' | 'DOG',
+}
+export function useRemoveStake() {
+  const removeStake = useContractWrite({
+    address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
+    abi: dpsAbi,
+    functionName: 'removeStake',
+  })
+
+  const write = async ({ withdrawAmount, faction }: RemoveStake) => {
+    if (!removeStake.writeAsync) return
+    const tx = await removeStake.writeAsync({ args: [parseEther(withdrawAmount), factionEnum[faction]] })
+    const receipt = await waitForTransaction(tx)
+
+    return receipt
+  }
+
+  return {
+    ...removeStake,
+    write,
+  }
+}
+

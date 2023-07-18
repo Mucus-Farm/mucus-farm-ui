@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
-import type { DepositInputs } from './index'
+import type { DepositInputs } from './Deposit'
 
 // components
 import { Button } from "@/components/Button"

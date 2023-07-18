@@ -6,7 +6,7 @@ import { env } from '@/env.mjs'
 const MAINNET = 1;
 const GOERLI = 5;
 
-export const fetchUsdcPrice = async () => {
+export const fetchEthUsdcPrice = async () => {
   const publicClient = getPublicClient({ chainId: MAINNET });
   const [USDCReserve, WETHReserve] = await publicClient.readContract({
     address: env.NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS as `0x${string}`,
@@ -34,6 +34,27 @@ export const fetchMucusEthPrice = async () => {
   return MUCUSReserveFloat / WETHReserveFloat
 }
 
+export const fetchLPTokenUsdcPrice = async () => {
+  const publicClient = getPublicClient({ chainId: GOERLI });
+  const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
+    address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
+    abi: pairAbi,
+    functionName: 'getReserves',
+  })
+  const lpTokenTotalSupply = await publicClient.readContract({
+    address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
+    abi: pairAbi,
+    functionName: 'totalSupply',
+  })
+
+  const ethUsdcPrice = await fetchEthUsdcPrice()
+  const mucusEthPrice = await fetchMucusEthPrice()
+  const mucusUsdcPrice = ethUsdcPrice / mucusEthPrice
+  const totalReserveUsdcValue = mucusUsdcPrice * parseFloat(formatUnits(MUCUSReserve, 18)) + ethUsdcPrice * parseFloat(formatUnits(WETHReserve, 18))
+  
+  return totalReserveUsdcValue / parseFloat(formatUnits(lpTokenTotalSupply, 18))
+}
+
 export const fetchMucusAmountOut = async (amountIn: bigint) => {
   const publicClient = getPublicClient({ chainId: GOERLI });
   const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
@@ -47,4 +68,4 @@ export const fetchMucusAmountOut = async (amountIn: bigint) => {
   const denominator = WETHReserve * BigInt(1000) + amountInWithFee;
 
   return numerator / denominator;
-}  
+}
