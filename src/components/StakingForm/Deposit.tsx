@@ -119,7 +119,7 @@ export default function Deposit() {
           <p className='text-md'>TO</p>
           <div className='flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 bg-mc-green-100'>
             <div className='flex flex-col'>
-              <div className='text-white text-lg 2xl:text-xl font-bold'>{Number(deposit) * mucusEthPrice}</div>
+              <div className='text-white text-lg 2xl:text-xl font-bold'>{Math.floor(Number(deposit) * mucusEthPrice)}</div>
               <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
                 {currencyFormat.format(Number(deposit) * usdcPrice)}
               </div>

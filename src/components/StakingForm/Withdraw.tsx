@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { useQuery, useNetwork } from 'wagmi';
+import { useQuery, useAccount, useNetwork } from 'wagmi';
+import { formatEther, parseEther } from 'viem';
 
 // components
 import { Button } from "@/components/Button"
@@ -16,20 +17,25 @@ import { RemoveStakeTransaction, type RemoveStakeValues } from '@/components/tra
 import { NumberInput } from "@/components/inputs/NumberInput"
 
 // api
-import { fetchLPTokenUsdcPrice } from '@/api/uniswapMethods';
+import { fetchLPTokenUsdcPrice } from '@/api/uniswapMethods'
+import { getStaker } from '@/api/dpsMethods'
 
 const withdrawInputs = z.object({ withdraw: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO') })
 type WithdrawInputs = z.infer<typeof withdrawInputs>
-export default function Withdraw() {
+type WithdrawProps = { faction: 'DOG' | 'FROG' }
+export default function Withdraw({ faction }: WithdrawProps) {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
   const [show, setShow] = useState<boolean>(false)
   const [transactionValues, setTransactionValues] = useState<RemoveStakeValues | null>(null)
+  const { address } = useAccount()
   const { chain } = useNetwork()
 
   const { data: lpTokenUsdcPrice } = useQuery(['fetchLPTokenUsdcPrice'], fetchLPTokenUsdcPrice, { suspense: true, cacheTime: 0 })
+  const { data: staker }= useQuery(['getStaker', address], () => getStaker(address!), { suspense: true, cacheTime: 0, enabled: !!address })
+  const userDeposit = faction === 'DOG' ? staker?.dogFactionAmount : staker?.frogFactionAmount
 
-  const { handleSubmit, register, watch, formState: { errors } } = useForm<WithdrawInputs>({
+  const { handleSubmit, register, watch, setValue, formState: { errors } } = useForm<WithdrawInputs>({
     defaultValues: {
       withdraw: '',
     },
@@ -46,8 +52,11 @@ export default function Withdraw() {
   }
 
   const withdrawMessage = () => {
-    if (!chain) {
+    if (!chain || !address) {
       return 'ISSUE WITH CONNECTING WALLET'
+    }
+    if (!staker) {
+      return 'FETCHING DATA'
     }
     if (withdraw === '') {
       return 'ENTER AMOUNT'
@@ -55,13 +64,19 @@ export default function Withdraw() {
     if (Number(withdraw) <= 0) {
       return 'MUST BE GREATER THAN ZERO'
     }
+    if (Number(withdraw) > Number(formatEther(staker.frogFactionAmount))) {
+      return 'INSUFFICIENT BALANCE'
+    }
 
     return 'WITHDRAW'
   }
 
   const withdrawValidation = () => {
-    return !chain 
+    return !chain
+      || !address
+      || !staker
       || Number(withdraw) <= 0 
+      || Number(withdraw) > Number(formatEther(staker.frogFactionAmount))
       || withdraw === '' 
       || errors.withdraw
   }
@@ -90,10 +105,15 @@ export default function Withdraw() {
         </div>
 
         <div className='flex justify-end gap-x-3 mt-4 2xl:mt-6'>
-          <Button className='p-2 font-normal border border-white rounded-xl text-white bg-mc-mahogany-300/60'>MAX</Button>
+          <Button
+            className={`p-2 font-normal border border-white rounded-xl text-white bg-mc-mahogany-300/60 ${!userDeposit ? 'opacity-60' : ''}`}
+            onClick={() => userDeposit && setValue('withdraw', Math.floor(Number(formatEther(userDeposit))).toString())}
+          >
+            MAX
+          </Button>
           <ConnectWrapper>
             <Button 
-              className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 ${withdrawValidation() ? 'opacity-60' : ''}`}
+              className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 transition-all ${withdrawValidation() ? 'opacity-60' : ''}`}
               type='submit'
             >
               {withdrawMessage()}

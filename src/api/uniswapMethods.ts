@@ -4,7 +4,6 @@ import { pairAbi } from '@/abis/pair'
 import { env } from '@/env.mjs'
 
 const MAINNET = 1;
-const GOERLI = 5;
 
 export const fetchEthUsdcPrice = async () => {
   const publicClient = getPublicClient({ chainId: MAINNET });
@@ -21,7 +20,7 @@ export const fetchEthUsdcPrice = async () => {
 }
 
 export const fetchMucusEthPrice = async () => {
-  const publicClient = getPublicClient({ chainId: GOERLI });
+  const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
   const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
     address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
     abi: pairAbi,
@@ -35,20 +34,28 @@ export const fetchMucusEthPrice = async () => {
 }
 
 export const fetchLPTokenUsdcPrice = async () => {
-  const publicClient = getPublicClient({ chainId: GOERLI });
-  const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
+  const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
+  const mucusPoolReservesPromise = publicClient.readContract({
     address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
     abi: pairAbi,
     functionName: 'getReserves',
   })
-  const lpTokenTotalSupply = await publicClient.readContract({
+  const lpTokenTotalSupplyPromise = publicClient.readContract({
     address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
     abi: pairAbi,
     functionName: 'totalSupply',
   })
 
-  const ethUsdcPrice = await fetchEthUsdcPrice()
-  const mucusEthPrice = await fetchMucusEthPrice()
+  const ethUsdcPricePromise = fetchEthUsdcPrice()
+  const mucusEthPricePromise = fetchMucusEthPrice()
+
+  const [[MUCUSReserve, WETHReserve], lpTokenTotalSupply, ethUsdcPrice, mucusEthPrice] = await Promise.all([
+    mucusPoolReservesPromise,
+    lpTokenTotalSupplyPromise,
+    ethUsdcPricePromise,
+    mucusEthPricePromise,
+  ])
+
   const mucusUsdcPrice = ethUsdcPrice / mucusEthPrice
   const totalReserveUsdcValue = mucusUsdcPrice * parseFloat(formatUnits(MUCUSReserve, 18)) + ethUsdcPrice * parseFloat(formatUnits(WETHReserve, 18))
   
@@ -56,7 +63,7 @@ export const fetchLPTokenUsdcPrice = async () => {
 }
 
 export const fetchMucusAmountOut = async (amountIn: bigint) => {
-  const publicClient = getPublicClient({ chainId: GOERLI });
+  const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
   const [MUCUSReserve, WETHReserve] = await publicClient.readContract({
     address: env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS as `0x${string}`,
     abi: pairAbi,

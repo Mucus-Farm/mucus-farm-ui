@@ -24,6 +24,7 @@ export const env = createEnv({
     NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS: z.string().min(1),
     NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS: z.string().min(1),
     NEXT_PUBLIC_ALCHEMY_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_CHAIN_ID: z.string().min(1),
   },
 
   /**
@@ -45,6 +46,7 @@ export const env = createEnv({
     NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS:
       process.env.NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS,
     NEXT_PUBLIC_ALCHEMY_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
+    NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

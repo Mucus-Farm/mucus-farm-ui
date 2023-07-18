@@ -1,3 +1,4 @@
+'use client'
 
 import { useContractWrite } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
@@ -68,4 +69,3 @@ export function useRemoveStake() {
     write,
   }
 }
-
