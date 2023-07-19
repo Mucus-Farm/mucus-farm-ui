@@ -23,6 +23,7 @@ import { fetchMucusEthPrice, fetchEthUsdcPrice } from '@/api/uniswapMethods';
 // utils
 import { factionColorPalette as fcp } from './index';
 import type { Faction } from '@/utils/constants'
+import { env } from '@/env.mjs'
 
 const depositInputs = z.object({ 
   deposit: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO'),
@@ -62,6 +63,9 @@ export default function Deposit({ faction }: DepositProps) {
     if (!balance || !chain) {
       return 'ISSUE WITH CONNECTING WALLET'
     }
+    if (chain.id !== Number(env.NEXT_PUBLIC_CHAIN_ID)) {
+      return 'WRONG NETWORK'
+    }
     if (Number(deposit) > Number(formatEther(balance.value))) {
       return 'INSUFFICIENT BALANCE'
     }
@@ -82,14 +86,15 @@ export default function Deposit({ faction }: DepositProps) {
   }
 
   const depositValidation = () => {
-    return !balance 
-      || !chain 
-      || Number(deposit) > Number(formatEther(balance.value)) 
-      || Number(deposit) <= 0 
-      || deposit === '' 
-      || errors.deposit 
-      || Number(slippage) > 69 
-      || slippage === '' 
+    return !balance
+      || !chain
+      || chain.id !== Number(env.NEXT_PUBLIC_CHAIN_ID)
+      || Number(deposit) > Number(formatEther(balance.value))
+      || Number(deposit) <= 0
+      || deposit === ''
+      || errors.deposit
+      || Number(slippage) > 69
+      || slippage === ''
       || errors.slippage
   }
 

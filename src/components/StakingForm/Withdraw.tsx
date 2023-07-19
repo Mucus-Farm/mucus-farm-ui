@@ -23,6 +23,7 @@ import { getStaker } from '@/api/dpsMethods'
 // utils
 import { factionColorPalette as fcp } from './index';
 import type { Faction } from '@/utils/constants'
+import { env } from '@/env.mjs';
 
 const withdrawInputs = z.object({ withdraw: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO') })
 type WithdrawInputs = z.infer<typeof withdrawInputs>
@@ -59,6 +60,9 @@ export default function Withdraw({ faction }: WithdrawProps) {
     if (!chain || !address) {
       return 'ISSUE WITH CONNECTING WALLET'
     }
+    if (chain.id !== Number(env.NEXT_PUBLIC_CHAIN_ID)) {
+      return 'WRONG NETWORK'
+    }
     if (!staker) {
       return 'FETCHING DATA'
     }
@@ -77,6 +81,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
 
   const withdrawValidation = () => {
     return !chain
+      || chain.id !== Number(env.NEXT_PUBLIC_CHAIN_ID)
       || !address
       || !staker
       || Number(withdraw) <= 0 

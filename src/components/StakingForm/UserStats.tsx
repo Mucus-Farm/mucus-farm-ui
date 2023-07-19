@@ -26,8 +26,8 @@ export default function UserStats({ faction }: UserStatsProps) {
 
   return (
     <div className={`flex flex-col ${fcp[faction].bg} rounded-xl p-6`}>
-      <h2 className={`${fcp[faction].text} font-bold tracking-tight text-center 2xl:text-3xl xl:text-2xl`}>LETS MAKE A PROMISE</h2>
-      <p className='text-white text-center 2xl:text-lg xl:text-md'>PROTECT US AND WE OWE YOU</p>
+      <h2 className={`${fcp[faction].text} font-bold tracking-tight text-center 2xl:text-3xl xl:text-2xl`}>{faction === 'DOG' ? 'LETS MAKE A DEAL' : 'LETS MAKE A PROMISE'}</h2>
+      <p className='text-white text-center 2xl:text-lg xl:text-md'>{faction === 'DOG' ? 'A SIMPLE GIVE AND TAKE' : 'PROTECT US AND WE OWE YOU'}</p>
 
       <div className={`flex justify-between mt-6 2xl:mt-12 xl:mt-8 ${fcp[faction].text} text-sm`}>
         <p>Total Deposited <span className='font-bold'>{totalDeposited && lpTokenUsdcPrice ? currencyFormat.format(totalDeposited * lpTokenUsdcPrice) : 'N/A'}</span></p>

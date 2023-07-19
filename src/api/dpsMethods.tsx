@@ -27,6 +27,7 @@ export function useAddStake() {
     address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
     abi: dpsAbi,
     functionName: 'addStake',
+    chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
   const write = async ({ depositAmount, faction, slippage }: AddStake) => {
@@ -58,6 +59,7 @@ export function useRemoveStake() {
     address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
     abi: dpsAbi,
     functionName: 'removeStake',
+    chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
   const write = async ({ withdrawAmount, faction }: RemoveStake) => {

@@ -14,7 +14,7 @@ import {
   goerli,
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
-import { alchemyProvider } from 'wagmi/providers/alchemy'
+// import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 // components & hooks
 import useTransactions from '@/hooks/useTransactions';
@@ -25,7 +25,6 @@ const { chains, publicClient } = configureChains(
   [
     publicProvider(),
     // alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
-    // alchemy
   ]
 );
 
