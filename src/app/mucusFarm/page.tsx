@@ -10,7 +10,7 @@ import Collection from "./Collection"
 // images
 import fndTrading from "@/images/fnd-trading.png"
 
-export default function MucusFarm() {
+const MucusFarm = () => {
   return (
     <section className='relative min-h-screen flex flex-col bg-mc-brown-200 px-3 py-6 xl:px-8 xl:py-8 2xl:px-10 2xl:py-10 overflow-hidden'>
       <Header/>
@@ -37,3 +37,5 @@ export default function MucusFarm() {
     </section>
   )
 }
+
+export default MucusFarm
