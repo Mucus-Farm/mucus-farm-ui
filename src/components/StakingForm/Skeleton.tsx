@@ -1,8 +1,9 @@
-
+import { Container } from "@/components/Container"
 import type { UserStatsProps } from "./UserStats"
 import type { DepositProps } from './Deposit'
 import type { WithdrawProps } from './Withdraw'
 import { factionColorPalette as fcp } from "./index"
+import type { Faction } from "@/utils/constants"
 
 export const UserStats = ({ faction }: UserStatsProps) => {
   return (
@@ -88,3 +89,16 @@ export const Withdraw = ({ faction }: WithdrawProps) => {
   )
 }
 
+export const Layout = ({ faction }: { faction: Faction }) => {
+  return (
+    <Container className='flex-grow flex flex-col p-4 gap-y-6 2xl:gap-y-10 w-[65vw] xl:w-[60vw] 2xl:w-[50vw] mx-0 mr-auto mt-6 xl:mt-8 2xl:mt-12'>
+      <UserStats faction={faction} />
+
+      <div className='flex-grow flex gap-x-6 2xl:gap-x-10'>
+        <Deposit faction={faction} />
+
+        <Withdraw faction={faction} />
+      </div> 
+    </Container>
+  )
+}

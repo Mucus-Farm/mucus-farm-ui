@@ -21,6 +21,7 @@ export default function DogPark() {
           alt=""
           unoptimized
           priority
+          placeholder='blur'
         />
       </div>
       <div className='absolute bottom-[25vh] xl:bottom-[22vh] 2xl:bottom-[16vh] right-6 xl:right-12 2xl:right-24 w-[30vw] xl:w-[33vw] 2xl:w-[38vw] p-8 bg-gray-100/25 rounded-2xl'>
@@ -29,6 +30,7 @@ export default function DogPark() {
           src={weCanWin}
           alt=""
           unoptimized
+          placeholder='blur'
         />
       </div>
     </section>
