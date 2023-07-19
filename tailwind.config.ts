@@ -16,6 +16,7 @@ export default {
       },
       colors: {
         "mc-gray": {
+          100: "#D9D9D9",
           200: "#EFE8DD",
         },
         "mc-purple": {

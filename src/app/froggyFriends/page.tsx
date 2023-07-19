@@ -6,6 +6,7 @@ import StakingForm from "@/components/StakingForm"
 
 // images
 import twinChibiImage from "@/images/twin-chibi.png"
+import helpUsPlease from "@/images/help-us-please-box.png"
 
 export default function FroggyFriends() {
   return (
@@ -20,6 +21,14 @@ export default function FroggyFriends() {
           alt=""
           unoptimized
           priority
+        />
+      </div>
+      <div className='absolute bottom-[25vh] xl:bottom-[22vh] 2xl:bottom-[16vh] right-6 xl:right-12 2xl:right-24 w-[30vw] xl:w-[33vw] 2xl:w-[38vw] p-8 bg-gray-100/25 rounded-2xl'>
+        <Image
+          className='w-full'
+          src={helpUsPlease}
+          alt=""
+          unoptimized
         />
       </div>
     </section>

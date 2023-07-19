@@ -32,7 +32,7 @@ export default function UserStats({ faction }: UserStatsProps) {
       <div className={`flex justify-between mt-6 2xl:mt-12 xl:mt-8 ${fcp[faction].text} text-sm`}>
         <p>Total Deposited <span className='font-bold'>{totalDeposited && lpTokenUsdcPrice ? currencyFormat.format(totalDeposited * lpTokenUsdcPrice) : 'N/A'}</span></p>
         <p>Staker Trading Rewards <span className='font-bold'>{staker ? `${stakerTradingRewards} %` : 'N/A'}</span></p>
-        <p>Your Deposit <span className='font-bold'>{userDeposit ? `${Math.floor(Number(formatEther(userDeposit)))} LP` : 'N/A'}</span></p>
+        <p>Your Deposit <span className='font-bold'>{userDeposit !== undefined ? `${Math.floor(Number(formatEther(userDeposit)))} LP` : 'N/A'}</span></p>
       </div>
     </div>
   )
