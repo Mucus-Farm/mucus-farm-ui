@@ -1,5 +1,5 @@
 // components
-import FactionMeter from "@/components/FactionMeter";
+// import FactionMeter from "@/components/FactionMeter";
 import { Button } from "@/components/Button"
 
 // utils
@@ -11,7 +11,7 @@ export default function Support({ faction }: SupportProps) {
   return (
     <div className='flex-grow flex flex-col justify-between p-4 rounded-xl bg-mc-black-500 text-white' >
       <h3 className={`2xl:text-lg xl:text-md font-bold tracking-tight ${fcp[faction].text}`}>SUPPORT</h3>
-      <FactionMeter />
+      {/* <FactionMeter /> */}
       <div className='flex gap-x-10 justify-between'>
         <div className='flex flex-col gap-y-2'>
           <p className='text-sm'>HELP US PLEASE!</p>

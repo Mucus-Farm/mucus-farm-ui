@@ -4,7 +4,7 @@ import Image from "next/image"
 import Header from "@/components/Header";
 import { Container } from "@/components/Container";
 import BattleButton from "@/components/BattleButton";
-import FactionMeter from "@/components/FactionMeter"
+// import FactionMeter from "@/components/FactionMeter"
 
 // images
 import frogBigGirl from "@/images/frog-big-girl.png"
@@ -21,7 +21,7 @@ const MainLogo = () => (
         alt=""
         unoptimized
       />
-      <FactionMeter className='mt-6'/>
+      {/* <FactionMeter className='mt-6'/> */}
     </Container> 
   </footer>
 )
