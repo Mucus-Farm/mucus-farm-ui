@@ -4,23 +4,13 @@ import Image from "next/image"
 import Header from "@/components/Header";
 import { Container } from "@/components/Container";
 import BattleButton from "@/components/BattleButton";
+import FactionMeter from "@/components/FactionMeter"
 
 // images
 import frogBigGirl from "@/images/frog-big-girl.png"
 import dogBigGirl from "@/images/dog-big-girl.png"
 import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
 import footer from "@/images/footer.png"
-
-const FactionMeter = () => {
-  // place logic here for Faction Meter
-
-  return (
-    <div className='flex h-2 mr-2 mt-4 w-full'>
-      <div className={`h-full w-[70%] bg-green-400/90`}/>
-      <div className={`h-full w-[30%] bg-orange-500/90`}/>
-    </div>
-  )
-}
 
 const MainLogo = () => (
   <footer className='relative z-50 gap-y-2'>
@@ -31,7 +21,7 @@ const MainLogo = () => (
         alt=""
         unoptimized
       />
-      <FactionMeter />
+      <FactionMeter className='mt-6'/>
     </Container> 
   </footer>
 )

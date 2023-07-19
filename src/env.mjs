@@ -8,6 +8,7 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
+    ALCHEMY_RPC_URL: z.string().min(1),
   },
 
   /**
@@ -47,6 +48,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS,
     NEXT_PUBLIC_ALCHEMY_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
+    ALCHEMY_RPC_URL: process.env.ALCHEMY_RPC_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

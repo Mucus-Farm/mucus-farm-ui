@@ -8,12 +8,14 @@ import Image from "next/image"
 import mucusLogoBrown from "@/images/mucus-logo-brown.png"
 import mucusLogoOrange from "@/images/mucus-logo-orange.png"
 import mucusLogoGreen from "@/images/mucus-logo-green.png"
+import mucusLogoBlack from "@/images/mucus-logo-black.png"
 
 const paths = {
   '/about': mucusLogoBrown,
   '/whitepaper': mucusLogoBrown,
   '/doggyDomination': mucusLogoOrange,
   '/froggyFriends': mucusLogoGreen,
+  '/mucusFarm': mucusLogoBlack,
 }
 
 export default function CenterLogo() {

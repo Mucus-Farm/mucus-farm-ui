@@ -16,14 +16,19 @@ export default {
       },
       colors: {
         "mc-gray": {
+          50: "#FDFDFD",
           100: "#D9D9D9",
           200: "#EFE8DD",
+        },
+        "mc-black": {
+          500: '#232636',
         },
         "mc-purple": {
           300: "#EAE1EC",
           400: "#CFC1D1",
         },
         "mc-brown": {
+          200: "#fdf8ef",
           300: "#624D4D",
           400: "#4E3939",
           500: "#865f66",

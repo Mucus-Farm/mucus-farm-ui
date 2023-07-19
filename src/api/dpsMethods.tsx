@@ -1,5 +1,3 @@
-'use client'
-
 import { useContractWrite } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
 import { parseEther } from 'viem'
