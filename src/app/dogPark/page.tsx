@@ -8,7 +8,7 @@ import StakingForm from "@/components/StakingForm"
 import threeChibi from "@/images/three-chibi.png"
 import weCanWin from "@/images/we-can-win-box.png"
 
-export default function DoggyDomination() {
+export default function DogPark() {
   return (
     <section className='relative min-h-screen flex flex-col bg-mc-gray-200 px-3 py-6 xl:px-8 xl:py-8 2xl:px-10 2xl:py-10'>
       <Header/>

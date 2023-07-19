@@ -8,7 +8,7 @@ import StakingForm from "@/components/StakingForm"
 import twinChibiImage from "@/images/twin-chibi.png"
 import helpUsPlease from "@/images/help-us-please-box.png"
 
-export default function FroggyFriends() {
+export default function FrogPond() {
   return (
     <section className='relative min-h-screen flex flex-col bg-mc-rose-200 px-3 py-6 xl:px-8 xl:py-8 2xl:px-10 2xl:py-10'>
       <Header/>

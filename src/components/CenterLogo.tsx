@@ -13,8 +13,8 @@ import mucusLogoBlack from "@/images/mucus-logo-black.png"
 const paths = {
   '/about': mucusLogoBrown,
   '/whitepaper': mucusLogoBrown,
-  '/doggyDomination': mucusLogoOrange,
-  '/froggyFriends': mucusLogoGreen,
+  '/dogPark': mucusLogoOrange,
+  '/frogPond': mucusLogoGreen,
   '/mucusFarm': mucusLogoBlack,
 }
 
