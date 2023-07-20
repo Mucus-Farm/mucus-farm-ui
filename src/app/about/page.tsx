@@ -50,7 +50,7 @@ export default function About() {
           src={frogGrid}
           alt=""
           unoptimized
-          placeholder='blur'
+          placeholder='empty'
         />
       </div>
     </section>

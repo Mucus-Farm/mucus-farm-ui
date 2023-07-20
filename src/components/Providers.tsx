@@ -34,7 +34,7 @@ const { connectors } = getDefaultWallets({
   chains
 });
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
+export const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
 const wagmiConfig = createConfig({
   autoConnect: true,

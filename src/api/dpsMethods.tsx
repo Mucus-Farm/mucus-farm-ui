@@ -14,6 +14,7 @@ import type { Faction } from '@/utils/constants'
 
 // api
 import { fetchMucusAmountOut } from '@/api/uniswapMethods'
+import { queryClient } from '@/components/Providers'
 
 type AddStake = {
   depositAmount: string;
@@ -38,6 +39,7 @@ export function useAddStake() {
 
     const tx = await addStake.writeAsync({ args: [factionEnum[faction], tokenAmountOutMin], value: parseEther(depositAmount) })
     const receipt = await waitForTransaction(tx)
+    await queryClient.invalidateQueries({ queryKey: ['getStaker'] })
 
     return receipt
   }
@@ -64,6 +66,7 @@ export function useRemoveStake() {
     if (!removeStake.writeAsync) return
     const tx = await removeStake.writeAsync({ args: [parseEther(withdrawAmount), factionEnum[faction]] })
     const receipt = await waitForTransaction(tx)
+    await queryClient.invalidateQueries({ queryKey: ['getStaker'] })
 
     return receipt
   }

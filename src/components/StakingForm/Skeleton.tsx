@@ -12,9 +12,9 @@ export const UserStats = ({ faction }: UserStatsProps) => {
       <p className='text-white text-center 2xl:text-lg xl:text-md'>PROTECT US AND WE OWE YOU</p>
 
       <div className={`flex justify-between 2xl:mt-12 xl:mt-8 ${fcp[faction].text} xl:text-sm`}>
-        <div className='flex items-center gap-x-2'>Total Deposited <div className={`h-4 w-10 ${fcp[faction].darkBg} rounded-full animate-pulse`}/></div>
-        <div className='flex items-center gap-x-2'>Staker Trading Rewards <div className={`h-4 w-6 ${fcp[faction].darkBg} rounded-full animate-pulse`}/></div>
-        <div className='flex items-center gap-x-2'>Your Deposit <div className={`h-4 w-8 ${fcp[faction].darkBg} rounded-full animate-pulse`}/></div>
+        <p>Total Deposited <span className='font-bold'>N/A</span></p>
+        <p>Staker Trading Rewards <span className='font-bold'>N/A</span></p>
+        <p>Your Deposit <span className='font-bold'>N/A</span></p>
       </div>
     </div>
   )

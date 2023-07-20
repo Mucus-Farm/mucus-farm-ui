@@ -1,11 +1,8 @@
-import { Suspense } from 'react';
-
 // components
 import { Container } from "@/components/Container"
 import UserStats from './UserStats'
 import Deposit from './Deposit'
 import Withdraw from './Withdraw'
-import * as Skeleton from './Skeleton'
 
 // utils
 import type { Faction } from '@/utils/constants';
@@ -29,18 +26,12 @@ export type StakingFormProps = { faction: Faction }
 export default function StakingForm({ faction }: StakingFormProps) {
   return (
     <Container className='flex-grow flex flex-col p-4 gap-y-6 2xl:gap-y-10 w-[65vw] xl:w-[60vw] 2xl:w-[50vw] mx-0 mr-auto mt-6 xl:mt-8 2xl:mt-12'>
-      <Suspense fallback={<Skeleton.UserStats faction={faction} />}>
-        <UserStats faction={faction} />
-      </Suspense>
+      <UserStats faction={faction} />
 
       <div className='flex-grow flex gap-x-6 2xl:gap-x-10'>
-        <Suspense fallback={<Skeleton.Deposit faction={faction} />}>
-          <Deposit faction={faction}/>
-        </Suspense>
+        <Deposit faction={faction}/>
 
-        <Suspense fallback={<Skeleton.Withdraw faction={faction} />}>
-          <Withdraw faction={faction} />
-        </Suspense> 
+        <Withdraw faction={faction} />
       </div> 
     </Container>
   )

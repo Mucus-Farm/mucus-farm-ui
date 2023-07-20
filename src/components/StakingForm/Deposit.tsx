@@ -12,6 +12,7 @@ import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
 import { SlippageDropdown } from './SlippageDropdown'
 import { AddStakeTransaction, type AddStakeValues } from '@/components/transactions/AddStake'
+import { Deposit as SkeletonDeposit } from './Skeleton'
 import { ConnectWrapper } from '../ConnectWrapper';
 
 // inputs
@@ -39,8 +40,8 @@ export default function Deposit({ faction }: DepositProps) {
   const { address } = useAccount()
   const { data: balance } = useBalance({ address })
   const { chain } = useNetwork()
-  const { data: usdcPrice } = useQuery(['fetchEthUscPrice'], fetchEthUsdcPrice, { suspense: true, cacheTime: 0 })
-  const { data: mucusEthPrice } = useQuery(['fetchMucusEthPrice'], fetchMucusEthPrice, { suspense: true, cacheTime: 0 })
+  const usdcPrice = useQuery(['fetchEthUscPrice'], fetchEthUsdcPrice, { cacheTime: 0 })
+  const mucusEthPrice = useQuery(['fetchMucusEthPrice'], fetchMucusEthPrice, { cacheTime: 0 })
 
   const methods = useForm<DepositInputs>({
     defaultValues: {
@@ -102,7 +103,7 @@ export default function Deposit({ faction }: DepositProps) {
     if (e.key === 'Enter') e.preventDefault()
   }
 
-  if (!usdcPrice || !mucusEthPrice) return null
+  if (!usdcPrice.data || !mucusEthPrice.data || usdcPrice.isLoading || mucusEthPrice.isLoading) return <SkeletonDeposit faction={faction} />
   return (
     <FormProvider {...methods} >
       <form className={`w-1/2 flex flex-col p-4 rounded-xl ${fcp[faction].text} ${fcp[faction].bg}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
@@ -118,7 +119,7 @@ export default function Deposit({ faction }: DepositProps) {
             <div className='flex flex-col'>
               <NumberInput name='deposit' register={register} />
               <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-                {currencyFormat.format(Number(deposit) * usdcPrice)}
+                {currencyFormat.format(Number(deposit) * usdcPrice.data)}
               </div>
             </div>
             <div className='rounded-xl border border-white px-2 py-1 text-white text-sm 2xl:text-lg'>ETH</div>
@@ -129,9 +130,9 @@ export default function Deposit({ faction }: DepositProps) {
           <p className='text-md'>TO</p>
           <div className={`flex justify-between items-center rounded-xl px-4 h-12 2xl:h-16 ${fcp[faction].mucus}`}>
             <div className='flex flex-col'>
-              <div className='text-white text-lg 2xl:text-xl font-bold'>{Math.floor(Number(deposit) * mucusEthPrice)}</div>
+              <div className='text-white text-lg 2xl:text-xl font-bold'>{Math.floor(Number(deposit) * mucusEthPrice.data)}</div>
               <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(deposit) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-                {currencyFormat.format(Number(deposit) * usdcPrice)}
+                {currencyFormat.format(Number(deposit) * usdcPrice.data)}
               </div>
             </div>
             <div className='rounded-xl border border-white px-2 py-1 text-white text-sm 2xl:text-lg'>MUCUS/ETH</div>
@@ -142,7 +143,7 @@ export default function Deposit({ faction }: DepositProps) {
           <p>Est.Allocation</p>
           <div className='flex justify-between pl-4'>
             <p>MUCUS</p>
-            <p>{Number(deposit) * mucusEthPrice}</p>
+            <p>{Number(deposit) * mucusEthPrice.data}</p>
           </div>
           <div className='flex justify-between pl-4'>
             <p>ETH</p>
