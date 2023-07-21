@@ -8,7 +8,9 @@ export default function Clock() {
   const [time, setTime] = useState<Date>(new Date())
 
   useEffect(() => {
-    setInterval(() => setTime(new Date()), 1000)
+    if (pathname === '/') {
+      setInterval(() => setTime(new Date()), 1000)
+    }
   }, [])
   
   if (pathname === '/') {

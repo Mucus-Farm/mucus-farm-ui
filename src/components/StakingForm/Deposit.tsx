@@ -161,7 +161,7 @@ export default function Deposit({ faction }: DepositProps) {
         </div>
 
         <div className='flex-grow flex items-end'>
-          <ConnectWrapper className='justify-self-end w-full mt-4'>
+          <ConnectWrapper className='bg-white/50 justify-self-end w-full mt-4'>
             <Button 
               className={`justify-self-end bg-white/50 border border-white ${fcp[faction].text}/60 w-full transition-all mt-4 ${depositValidation() ? 'opacity-60' : ''}`}
               type='submit'

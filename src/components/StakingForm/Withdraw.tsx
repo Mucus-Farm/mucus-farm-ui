@@ -122,7 +122,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
           >
             MAX
           </Button>
-          <ConnectWrapper>
+          <ConnectWrapper className='bg-white/50'>
             <Button 
               className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 w-full transition-all ${withdrawValidation() ? 'opacity-60' : ''}`}
               type='submit'

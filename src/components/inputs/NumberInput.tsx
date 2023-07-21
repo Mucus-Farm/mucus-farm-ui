@@ -6,6 +6,7 @@ type NumberInputProps = Partial<React.DOMAttributes<HTMLInputElement> & React.In
   name: string;
   register: UseFormRegister<any>;
 }
+
 export function NumberInput({ className, name, register, ...props}: NumberInputProps) {
   return (
     <input

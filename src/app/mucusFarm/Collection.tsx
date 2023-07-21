@@ -93,7 +93,7 @@ export default function Collection({ faction }: CollectionProps) {
       </div>
 
       <div className='flex justify-between w-[400px] px-4 mt-4'>
-        <ConnectWrapper>
+        <ConnectWrapper className={`bg-transparent mx-auto ${fcp[faction].text}`}>
           <Button
             className={`px-2 py-1 ${fcp[faction].bg} text-sm border border-white text-white font-normal`}
           >
