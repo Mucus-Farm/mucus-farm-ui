@@ -16,8 +16,10 @@ import { MintTransaction, type MintValues  } from '@/components/transactions/Min
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { Checkbox } from "@/components/inputs/Checkbox";
 
+// hooks
+import useFaction from '@/hooks/useFaction';
+
 // utils
-import type { Faction } from "@/utils/constants";
 import { factionColorPalette as fcp } from './utils';
 import { env } from '@/env.mjs';
 
@@ -29,10 +31,10 @@ const quantityInputs = z.object({
   stake: z.boolean(),
 })
 type QuantityInputs = z.infer<typeof quantityInputs>
-type QuantityProps = { faction: Faction }
-export default function Quantity({ faction }: QuantityProps) {
+export default function Quantity() {
   const [show, setShow] = useState<boolean>(false)
   const [transactionValues, setTransactionValues] = useState<MintValues | null>(null)
+  const faction = useFaction(state => state.faction)
   const { chain } = useNetwork()
   const minted = useQuery(['getMinted'], getMinted, { cacheTime: 0 })
   const publicMintStarted = useQuery(['getPublicMintStarted'], getPublicMintStarted, { cacheTime: 0 })

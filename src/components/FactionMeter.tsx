@@ -1,7 +1,8 @@
 import { twMerge } from "tailwind-merge";
+import { env } from "@/env.mjs";
 
 export default async function FactionMeter({ className }: { className?: string }) {
-  const res = await fetch(`${process.env.HOST!}/api/dps/getTotalStaked`);
+  const res = await fetch(`${env.HOST}/api/dps/getTotalStaked`);
   const results = await (res.json() as Promise<{ totalDogFactionAmount: number, totalFrogFactionAmount: number }>)
   const { totalDogFactionAmount, totalFrogFactionAmount } = results
 

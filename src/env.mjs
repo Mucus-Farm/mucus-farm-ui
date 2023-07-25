@@ -9,6 +9,10 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     ALCHEMY_RPC_URL: z.string().min(1),
+    R2_WORKER_ENDPOINT: z.string().min(1),
+    R2_WORKER_IMAGE_ENDPOINT: z.string().min(1),
+    DB_URL: z.string().min(1),
+    HOST: z.string().min(1),
   },
 
   /**
@@ -27,8 +31,11 @@ export const env = createEnv({
     NEXT_PUBLIC_WETH_CONTRACT_ADDRESS: z.string().min(1),
     NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS: z.string().min(1),
     NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS: z.string().min(1),
+
     NEXT_PUBLIC_ALCHEMY_API_KEY: z.string().min(1),
     NEXT_PUBLIC_CHAIN_ID: z.string().min(1),
+    NEXT_PUBLIC_HOST: z.string().min(1),
+    NEXT_PUBLIC_R2_WORKER_IMAGE_ENDPOINT: z.string().min(1),
   },
 
   /**
@@ -47,16 +54,24 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS,
     NEXT_PUBLIC_MUCUS_FARM_CONTRACT_ADDRESS:
       process.env.NEXT_PUBLIC_MUCUS_FARM_CONTRACT_ADDRESS,
-
     NEXT_PUBLIC_WETH_CONTRACT_ADDRESS:
       process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS,
     NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS:
       process.env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS,
     NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS:
       process.env.NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS,
+
     NEXT_PUBLIC_ALCHEMY_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
+    NEXT_PUBLIC_HOST: process.env.NEXT_PUBLIC_HOST,
+    NEXT_PUBLIC_R2_WORKER_IMAGE_ENDPOINT:
+      process.env.NEXT_PUBLIC_R2_WORKER_IMAGE_ENDPOINT,
+
+    HOST: process.env.HOST,
     ALCHEMY_RPC_URL: process.env.ALCHEMY_RPC_URL,
+    R2_WORKER_ENDPOINT: process.env.R2_WORKER_ENDPOINT,
+    R2_WORKER_IMAGE_ENDPOINT: process.env.R2_WORKER_ENDPOINT,
+    DB_URL: process.env.DB_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

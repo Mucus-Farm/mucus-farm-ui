@@ -1,19 +1,20 @@
 'use client'
 
 import Image from 'next/image'
+import { useQuery } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 // components
 import { Button } from "@/components/Button"
 import { ConnectWrapper } from '@/components/ConnectWrapper';
 
-// utils
-import type { Faction } from "@/utils/constants";
-import { factionColorPalette as fcp } from './utils';
+// hooks
+import useFaction from '@/hooks/useFaction';
 
-// test images
-import testNft1 from "@/images/test-nft-1.png"
-import testNft2 from "@/images/test-nft-2.png"
-import testNft3 from "@/images/test-nft-3.png"
+// utils
+import { factionColorPalette as fcp } from './utils';
+import { env } from '@/env.mjs'
+import type { Owner } from '@/db/schema'
 
 const LeftArrow = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 25" fill="none" className={className} >
@@ -27,18 +28,27 @@ const RightArrow = ({ className }: { className?: string }) => (
   </svg>
 )
 
-type CollectionProps = { faction: Faction }
-export default function Collection({ faction }: CollectionProps) {
-  const pageNumber = 5
-  const totalPages = 29
+const getOwnedNfts = async (address: `0x${string}`) => {
+  const res = await fetch(`${env.NEXT_PUBLIC_HOST}/api/getOwnedNfts/${address}`)
+
+  return res.json() as Promise<Owner[]>
+}
+
+const getNftImages = (Nfts: Owner[]) => Nfts.map(nft => ({
+  ...nft,
+  image: `${env.NEXT_PUBLIC_R2_WORKER_IMAGE_ENDPOINT}/${nft.id}`,
+}))
+
+export default function Collection() {
   const selectedNfts = [1, 2]
-  const nfts = [
-    { tokenId: 1, image: testNft1 },
-    { tokenId: 2, image: testNft2 },
-    { tokenId: 3, image: testNft3 },
-  ]
   const dailyYield = 9214.24
   const totalYield = 55640.32
+
+  const { faction, setFaction } = useFaction(state => state)
+  const { address } = useAccount()
+  const ownedNfts = useQuery(['getOwnedNfts'], () => getOwnedNfts(address!), { enabled: !!address })
+
+  console.log("owned tokenIds: ", ownedNfts?.data)
 
   return (
     <div className={`relative flex flex-col items-center p-4 rounded-xl bg-mc-black-500 ${fcp[faction].text}`} >
@@ -52,32 +62,23 @@ export default function Collection({ faction }: CollectionProps) {
       </div>
 
       <div className='flex gap-x-16 mt-6'>
-        <h2 className={`text-2xl font-bold underline ${faction === 'FROG' ? fcp[faction].text : 'text-white/60' }`}>FROGS</h2>
-        <h2 className={`text-2xl font-bold underline ${faction === 'DOG' ? fcp[faction].text : 'text-white/60' }`}>DOGS</h2>
+        <h2 onClick={() => setFaction('FROG')} className={`cursor-pointer text-2xl font-bold underline ${faction === 'FROG' ? fcp[faction].text : 'text-white/60' }`}>FROGS</h2>
+        <h2 onClick={() => setFaction('DOG')} className={`cursor-pointer text-2xl font-bold underline ${faction === 'DOG' ? fcp[faction].text : 'text-white/60' }`}>DOGS</h2>
       </div>
 
-      <div className='flex gap-x-8 mt-10 items-center'>
-        <div className='cursor-pointer'>
-          <LeftArrow className={`fill-current ${fcp[faction].text} w-7 mb-4`}/>
-        </div> 
-        <div className='flex flex-col'>
-          <div className='flex gap-x-10'>
-            {nfts.map(({ tokenId, image }) => (
-              <div className={`border-2 overflow-hidden ${selectedNfts.includes(tokenId) ? 'border-white' : fcp[faction].border} w-[165px] h-[165px]`} key={tokenId}>
-                <Image
-                  className='w-full object-contain'
-                  src={image}
-                  alt={`nft-${tokenId}`}
-                  unoptimized
-                />
-              </div>
-            ))}
+      <div className='flex flex-wrap p-10 gap-8 bg-black/25 rounded-xl mt-6 w-full '>
+        {getNftImages(ownedNfts?.data || []).map(({ id, image }) => (
+          <div className={`border-2 overflow-hidden ${selectedNfts.includes(id) ? 'border-white' : fcp[faction].border} w-[100px] h-[100px]`} key={id}>
+            <Image
+              className='w-full object-contain'
+              src={image}
+              width={100}
+              height={100}
+              alt={`nft-${id}`}
+              unoptimized
+            />
           </div>
-          <div className={`ml-auto mt-2 ${fcp[faction].text}`}>{pageNumber} of {totalPages}</div>
-        </div>
-        <div className='cursor-pointer'>
-          <RightArrow className={`fill-current ${fcp[faction].text} w-7 mb-4`}/>
-        </div> 
+        ))}
       </div>
 
       <div className={`p-4 bg-black/25 rounded-xl gap-y-2 w-[400px] mt-2 text-sm ${fcp[faction].text}`}>
