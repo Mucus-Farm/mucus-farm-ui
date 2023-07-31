@@ -1,11 +1,11 @@
-import Image from "next/image"
+// import Image from "next/image"
 
 // components
 import { Container } from "@/components/Container";
 import Header from "@/components/Header";
 
 // images
-import frogGrid from "@/images/frog-grid.png"
+// import frogGrid from "@/images/frog-grid.png"
 
 const Body = () => {
   return (
@@ -45,12 +45,10 @@ export default function About() {
       <Body />
 
       <div className='absolute top-1/2 -translate-y-1/2 right-0 w-[45vw] xl:w-[42vw] mt-6 xl:mt-0'>
-        <Image
+        <img
           className='w-full'
-          src={frogGrid}
+          src='https://mucus-images.0xmucushq.workers.dev/frog-grid.png'
           alt=""
-          unoptimized
-          placeholder='empty'
         />
       </div>
     </section>

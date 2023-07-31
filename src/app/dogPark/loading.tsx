@@ -1,12 +1,6 @@
-import Image from "next/image"
-
 // components
 import Header from "@/components/Header"
 import { Layout as SkeletonLayout } from "@/components/StakingForm/Skeleton"
-
-// images
-import threeChibi from "@/images/three-chibi.png"
-import weCanWin from "@/images/we-can-win-box.png"
 
 export default function Loading() {
   return (
@@ -15,22 +9,17 @@ export default function Loading() {
       <SkeletonLayout faction='DOG' />
 
       <div className='absolute top-1/2 -translate-y-1/2 right-0 xl:right-4 2xl:right-16 w-[35vw] xl:w-[38vw] 2xl:w-[42vw]'>
-        <Image
+        <img
           className='w-full'
-          src={threeChibi}
+          src='https://mucus-images.0xmucushq.workers.dev/three-chibi-image.png'
           alt=""
-          unoptimized
-          priority
-          placeholder='empty'
         />
       </div>
       <div className='absolute bottom-[25vh] xl:bottom-[22vh] 2xl:bottom-[16vh] right-6 xl:right-12 2xl:right-24 w-[30vw] xl:w-[33vw] 2xl:w-[38vw] p-8 bg-gray-100/25 rounded-2xl'>
-        <Image
+        <img
           className='w-full'
-          src={weCanWin}
+          src='https://mucus-images.0xmucushq.workers.dev/we-can-win.png'
           alt=""
-          unoptimized
-          placeholder='empty'
         />
       </div>
     </section>

@@ -4,12 +4,6 @@ import { Container } from "@/components/Container";
 import BattleButton from "@/components/BattleButton";
 import FactionMeter from "@/components/FactionMeter"
 
-// images
-// import frogBigGirl from "@/images/frog-big-girl.png"
-// import dogBigGirl from "@/images/dog-big-girl.png"
-// import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
-// import footer from "@/images/footer.png"
-
 const MainLogo = () => (
   <footer className='relative z-50 gap-y-2'>
     <Container className='mx-0 ml-auto flex flex-col items-end mb-12 w-[50vw]'>
