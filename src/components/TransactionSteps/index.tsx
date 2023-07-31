@@ -26,7 +26,6 @@ const Transaction = ({ skip, step, stepElement, setStep, action, onClose }: Tran
     try {
       if (!action) return
       setTransactionState('PENDING')
-      console.log("triggers the action")
       await action()
 
       setTransactionState('SUCCESS')

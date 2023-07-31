@@ -8,12 +8,16 @@ import * as Skeleton from './skeleton'
 import { Button } from '@/components/Button'
 
 // api
-import { useWhitelistMint, useMint, useBreedAndAdopt } from '@/api/fndMethods'
+import { useTransform } from '@/api/fndMethods'
+
+// utils
+import type { Faction } from '@/utils/constants'
 
 // images
 import fndTrading from '@/images/fnd-trading.png'
 
-export function MintTransactionStep({ status, retry }: StepElementProps) {
+
+export function TransformTransactionStep({ status, retry }: StepElementProps) {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={fndTrading} alt='fndTrading' unoptimized />
@@ -27,7 +31,7 @@ export function MintTransactionStep({ status, retry }: StepElementProps) {
   )
 }
 
-export function MintSuccess() {
+export function TransformSuccess() {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={fndTrading} alt='fndTrading' unoptimized />
@@ -36,46 +40,33 @@ export function MintSuccess() {
   )
 }
 
-const tokensPaidInEth = 2000;
-
-export type MintValues = {
-  amount: number;
+export type TransformValues = {
+  tokenIds: number[];
+  transformationType: Faction;
   stake: boolean;
-  value?: string;
-  publicMintStarted: boolean;
-  minted: number;
 }
-type MintTransactionProps = MintValues & { onClose: () => void; }
-
-const useMintAction = ({ publicMintStarted, minted }: { publicMintStarted: boolean, minted: number }) => {
-  const whitelistMint = useWhitelistMint()
-  const breedAndAdopt = useBreedAndAdopt()
-  const mint = useMint()
-
-  if (!publicMintStarted) return whitelistMint
-
-  if (minted > tokensPaidInEth) return breedAndAdopt
-
-  return mint
-}
-
-export const MintTransaction = ({ amount, stake, value, publicMintStarted, minted, onClose }: MintTransactionProps) => {
-  const mint = useMintAction({ publicMintStarted, minted })
+type TransformTransactionProps = TransformValues & { onClose: () => void; }
+export const TransformTransaction = ({ tokenIds, transformationType, stake, onClose }: TransformTransactionProps) => {
+  const transform = useTransform()
 
   const steps = [
     {
-      stepElement: MintTransactionStep,
-      action: () => mint.write({ amount, stake, value })
+      stepElement: TransformTransactionStep,
+      action: () => transform.write({ 
+        tokenIds: tokenIds.map(id => BigInt(id)),
+        transformationType: transformationType === 'DOG' ? 0 : 1,
+        stake,
+      })
     },
     {
-      stepElement: MintSuccess,
+      stepElement: TransformSuccess,
     }
   ]
 
   return <TransactionSteps
     steps={steps}
     onClose={onClose}
-    isLoading={!mint.writeAsync}
-    Skeleton={Skeleton.MintTransaction}
+    isLoading={!transform.writeAsync}
+    Skeleton={Skeleton.TransformTransaction}
   />
 }

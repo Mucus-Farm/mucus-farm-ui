@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 // components
 import Header from "@/components/Header";
 import { Container } from "@/components/Container";
@@ -7,19 +5,18 @@ import BattleButton from "@/components/BattleButton";
 import FactionMeter from "@/components/FactionMeter"
 
 // images
-import frogBigGirl from "@/images/frog-big-girl.png"
-import dogBigGirl from "@/images/dog-big-girl.png"
-import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
-import footer from "@/images/footer.png"
+// import frogBigGirl from "@/images/frog-big-girl.png"
+// import dogBigGirl from "@/images/dog-big-girl.png"
+// import frogDogLogo from "@/images/frogs-vs-dogs-logo.png"
+// import footer from "@/images/footer.png"
 
 const MainLogo = () => (
   <footer className='relative z-50 gap-y-2'>
     <Container className='mx-0 ml-auto flex flex-col items-end mb-12 w-[50vw]'>
-      <Image
+      <img
         className='w-full'
-        src={frogDogLogo}
+        src='https://mucus-images.0xmucushq.workers.dev/frogs-vs-dogs-image.png'
         alt=""
-        unoptimized
       />
       <FactionMeter className='mt-6'/>
     </Container> 
@@ -33,20 +30,18 @@ export default function Page() {
           <div className='absolute inset-0'>
             <div className="relative h-full max-w-7xl xl:max-w-[1600px] mx-auto">
               <div className='absolute bottom-6 left-10 w-[40vw] 2xl:left-0'>
-                <Image
+                <img
                   className='w-full'
-                  src={frogBigGirl}
+                  src='https://mucus-images.0xmucushq.workers.dev/frog-big-girl.png'
                   alt=""
-                  unoptimized
                 />
               </div>
 
               <div className='absolute top-12 right-16 xl:top-20 xl:right-12 w-[32vw]'>
-                <Image
+                <img
                   className='w-full'
-                  src={dogBigGirl}
+                  src='https://mucus-images.0xmucushq.workers.dev/dog-big-girl.png'
                   alt=""
-                  unoptimized
                 />
               </div> 
             </div> 
@@ -59,7 +54,7 @@ export default function Page() {
           <MainLogo />
         </section>
         <div className='absolute bottom-0 left-0 w-100'>
-          <Image className='object-contain' src={footer} alt='' unoptimized />
+          {/* <img className='object-contain' src={footer} alt='' unoptimized /> */}
         </div>
       </main>
   )

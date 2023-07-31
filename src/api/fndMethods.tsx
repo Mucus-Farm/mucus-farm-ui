@@ -33,6 +33,7 @@ export const useWhitelistMint = () => {
     const tx = await whitelistMint.writeAsync({ args: [amount, stake, proof] })
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
+    await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
 
     return receipt
   }
@@ -57,6 +58,7 @@ export const useMint = () => {
     const tx = await mint.writeAsync({ args: [amount, stake], value: parseEther(value!) }) 
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
+    await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
 
     return receipt
   }
@@ -81,6 +83,7 @@ export const useBreedAndAdopt = () => {
     const tx = await breedAndAdopt.writeAsync({ args: [amount, stake] })
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
+    await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
 
     return receipt
   }
@@ -91,25 +94,35 @@ export const useBreedAndAdopt = () => {
   }
 }
 
+type Transform = {
+  tokenIds: bigint[];
+  transformationType: number;
+  stake: boolean;
+}
 export const useTransform = () => {
-  const breedAndAdopt = useContractWrite({
+  const transform = useContractWrite({
     address: env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS as `0x${string}`,
     abi: fndAbi,
     functionName: 'transform',
     chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
-  const write = async ({ amount, stake }: Mint) => {
-    if (!breedAndAdopt.writeAsync) return
+  const write = async ({ tokenIds, transformationType, stake }: Transform) => {
+    if (!transform.writeAsync) return
 
-    const tx = await breedAndAdopt.writeAsync({ args: [amount, stake] })
+    console.log("tokenIds: ", tokenIds)
+    console.log("transformation type: ", transformationType)
+    console.log("stake: ", stake)
+
+    const tx = await transform.writeAsync({ args: [tokenIds, transformationType, stake] })
     const receipt = await waitForTransaction(tx)
+    await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
 
     return receipt
   }
 
   return {
-    ...breedAndAdopt,
+    ...transform,
     write,
   }
 }

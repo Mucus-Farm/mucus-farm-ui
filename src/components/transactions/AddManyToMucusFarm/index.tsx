@@ -8,12 +8,12 @@ import * as Skeleton from './skeleton'
 import { Button } from '@/components/Button'
 
 // api
-import { useWhitelistMint, useMint, useBreedAndAdopt } from '@/api/fndMethods'
+import { useAddManyToMucusFarm } from '@/api/mucusFarmMethods'
 
 // images
 import fndTrading from '@/images/fnd-trading.png'
 
-export function MintTransactionStep({ status, retry }: StepElementProps) {
+export function AddManyToMucusFarmTransactionStep({ status, retry }: StepElementProps) {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={fndTrading} alt='fndTrading' unoptimized />
@@ -27,7 +27,7 @@ export function MintTransactionStep({ status, retry }: StepElementProps) {
   )
 }
 
-export function MintSuccess() {
+export function AddManyToMucusFarmSuccess() {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={fndTrading} alt='fndTrading' unoptimized />
@@ -36,46 +36,27 @@ export function MintSuccess() {
   )
 }
 
-const tokensPaidInEth = 2000;
-
-export type MintValues = {
-  amount: number;
-  stake: boolean;
-  value?: string;
-  publicMintStarted: boolean;
-  minted: number;
+export type AddManyToMucusFarmValues = {
+  tokenIds: number[];
 }
-type MintTransactionProps = MintValues & { onClose: () => void; }
-
-const useMintAction = ({ publicMintStarted, minted }: { publicMintStarted: boolean, minted: number }) => {
-  const whitelistMint = useWhitelistMint()
-  const breedAndAdopt = useBreedAndAdopt()
-  const mint = useMint()
-
-  if (!publicMintStarted) return whitelistMint
-
-  if (minted > tokensPaidInEth) return breedAndAdopt
-
-  return mint
-}
-
-export const MintTransaction = ({ amount, stake, value, publicMintStarted, minted, onClose }: MintTransactionProps) => {
-  const mint = useMintAction({ publicMintStarted, minted })
+type AddManyToMucusFarmTransactionProps = AddManyToMucusFarmValues & { onClose: () => void; }
+export const AddManyToMucusFarmTransaction = ({ tokenIds, onClose }: AddManyToMucusFarmTransactionProps) => {
+  const addManyToMucusFarm = useAddManyToMucusFarm()
 
   const steps = [
     {
-      stepElement: MintTransactionStep,
-      action: () => mint.write({ amount, stake, value })
+      stepElement: AddManyToMucusFarmTransactionStep,
+      action: () => addManyToMucusFarm.write({ tokenIds: tokenIds.map(id => BigInt(id)) })
     },
     {
-      stepElement: MintSuccess,
+      stepElement: AddManyToMucusFarmSuccess,
     }
   ]
 
   return <TransactionSteps
     steps={steps}
     onClose={onClose}
-    isLoading={!mint.writeAsync}
-    Skeleton={Skeleton.MintTransaction}
+    isLoading={!addManyToMucusFarm.writeAsync}
+    Skeleton={Skeleton.AddManyToMucusFarmTransaction}
   />
 }

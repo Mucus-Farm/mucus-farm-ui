@@ -8,12 +8,12 @@ import * as Skeleton from './skeleton'
 import { Button } from '@/components/Button'
 
 // api
-import { useWhitelistMint, useMint, useBreedAndAdopt } from '@/api/fndMethods'
+import { useClaimMany } from '@/api/mucusFarmMethods'
 
 // images
 import fndTrading from '@/images/fnd-trading.png'
 
-export function MintTransactionStep({ status, retry }: StepElementProps) {
+export function ClaimManyTransactionStep({ status, retry }: StepElementProps) {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={fndTrading} alt='fndTrading' unoptimized />
@@ -27,7 +27,7 @@ export function MintTransactionStep({ status, retry }: StepElementProps) {
   )
 }
 
-export function MintSuccess() {
+export function ClaimManySuccess() {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <Image width={200} height={200} src={fndTrading} alt='fndTrading' unoptimized />
@@ -36,46 +36,28 @@ export function MintSuccess() {
   )
 }
 
-const tokensPaidInEth = 2000;
-
-export type MintValues = {
-  amount: number;
-  stake: boolean;
-  value?: string;
-  publicMintStarted: boolean;
-  minted: number;
+export type ClaimManyValues = {
+  tokenIds: number[];
+  unStake: boolean;
 }
-type MintTransactionProps = MintValues & { onClose: () => void; }
-
-const useMintAction = ({ publicMintStarted, minted }: { publicMintStarted: boolean, minted: number }) => {
-  const whitelistMint = useWhitelistMint()
-  const breedAndAdopt = useBreedAndAdopt()
-  const mint = useMint()
-
-  if (!publicMintStarted) return whitelistMint
-
-  if (minted > tokensPaidInEth) return breedAndAdopt
-
-  return mint
-}
-
-export const MintTransaction = ({ amount, stake, value, publicMintStarted, minted, onClose }: MintTransactionProps) => {
-  const mint = useMintAction({ publicMintStarted, minted })
+type ClaimManyTransactionProps = ClaimManyValues & { onClose: () => void; }
+export const ClaimManyTransaction = ({ tokenIds, unStake, onClose }: ClaimManyTransactionProps) => {
+  const claimMany = useClaimMany()
 
   const steps = [
     {
-      stepElement: MintTransactionStep,
-      action: () => mint.write({ amount, stake, value })
+      stepElement: ClaimManyTransactionStep,
+      action: () => claimMany.write({ tokenIds: tokenIds.map(id => BigInt(id)), unStake })
     },
     {
-      stepElement: MintSuccess,
+      stepElement: ClaimManySuccess,
     }
   ]
 
   return <TransactionSteps
     steps={steps}
     onClose={onClose}
-    isLoading={!mint.writeAsync}
-    Skeleton={Skeleton.MintTransaction}
+    isLoading={!claimMany.writeAsync}
+    Skeleton={Skeleton.ClaimManyTransaction}
   />
 }
