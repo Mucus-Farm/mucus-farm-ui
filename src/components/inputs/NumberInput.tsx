@@ -6,6 +6,7 @@ type NumberInputProps = Partial<React.DOMAttributes<HTMLInputElement> & React.In
   name: string;
   register: UseFormRegister<any>;
 }
+
 export function NumberInput({ className, name, register, ...props}: NumberInputProps) {
   return (
     <input
@@ -13,7 +14,6 @@ export function NumberInput({ className, name, register, ...props}: NumberInputP
       type='text'
       inputMode="decimal"
       autoComplete='off'
-      pattern='[0-9]*'
       placeholder='0.0'
       minLength={1}
       maxLength={79}

@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
@@ -13,6 +15,7 @@ type ButtonProps = {
   className?: string;
   href?: string;
   onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
   children: React.ReactNode;
 } 
 export function Button({
@@ -20,6 +23,7 @@ export function Button({
   className,
   href,
   children,
+  type = 'button',
   ...props
 }: ButtonProps) {
   className = twMerge(
@@ -30,6 +34,6 @@ export function Button({
   return href ? (
     <Link href={href} className={className} {...props} >{children}</Link>
   ) : (
-    <button className={className} type='button' {...props} >{children}</button>
+    <button className={className} type={type} {...props} >{children}</button>
   )
 }
