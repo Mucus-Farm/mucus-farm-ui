@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { useInfiniteQuery, useAccount } from 'wagmi'
 import type { UseInfiniteQueryResult } from '@tanstack/react-query'
 
@@ -143,13 +142,12 @@ export default function Collection() {
               ref={i === allOwnedNfts.length - 1 ? lastNftRef : undefined}
               key={id}
             >
-              <Image
+              <img
                 className='w-full object-contain'
                 src={image}
                 width={100}
                 height={100}
                 alt={`nft-${id}`}
-                unoptimized
               />
               <div className={`absolute top-1 right-1 rounded-md px-1 py-0 ${fcp[faction].bg} ${staked ? 'opacity-100' : 'opacity-0'}`}>
                 <p className='text-[10px] text-white'>STAKED</p>

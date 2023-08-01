@@ -1,7 +1,5 @@
 'use client'
 
-import Image from 'next/image'
-
 // components
 import TransactionSteps, { type StepElementProps } from '@/components/TransactionSteps'
 import * as Skeleton from './skeleton'
@@ -9,18 +7,15 @@ import { Button } from '@/components/Button'
 
 // utils
 import type { Faction } from '@/utils/constants'
+import { env } from '@/env.mjs'
 
 // api
 import { useAddStake } from '@/api/dpsMethods'
 
-// images
-import frogBigGirl from '@/images/frog-big-girl.png'
-import dogBigGirl from '@/images/dog-big-girl.png'
-
 export function AddDogStakeTransaction({ status, retry }: StepElementProps) {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
-      <Image width={200} height={200} src={dogBigGirl} alt='doggySit' unoptimized />
+      <img width={200} height={200} src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/2642e55e-56d3-4e20-80cb-b5e32a61ab00/public`} alt='doggySit' />
       {status === 'PENDING' && <p className='text-mc-brown-500 text-xl mt-6'>LOADING</p>}
       {status === 'FAILED' && (
         <Button className='bg-white/50 border-2 border-mc-mahogany-300 py-4 text-lg 2xl:text-2xl text-mc-brown-500 w-full mt-4' onClick={() => retry()}>
@@ -34,7 +29,7 @@ export function AddDogStakeTransaction({ status, retry }: StepElementProps) {
 export function AddDogStakeSuccess() {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
-      <Image width={200} height={200} src={dogBigGirl} alt='doggySit' unoptimized />
+      <img width={200} height={200} src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/2642e55e-56d3-4e20-80cb-b5e32a61ab00/public`} alt='doggySit' />
       <p className='text-mc-brown-500 text-lg mt-6'>SUCCESS</p>
     </div>
   )
@@ -43,7 +38,7 @@ export function AddDogStakeSuccess() {
 export function AddFrogStakeTransaction({ status, retry }: StepElementProps) {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-rose-200 p-8 max-w-[500px] border-2 border-white'>
-      <Image width={200} height={200} src={frogBigGirl} alt='froggyWait' unoptimized />
+      <img width={200} height={200} src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/c369925e-f86b-4ec2-db09-eee1b6c7d400/public`} alt='froggyWait' />
       {status === 'PENDING' && <p className='text-mc-mahogany-300 text-xl mt-6'>LOADING</p>}
       {status === 'FAILED' && (
         <Button className='bg-white/50 border-2 border-mc-mahogany-300 py-4 text-lg 2xl:text-2xl text-mc-mahogany-300 w-full mt-4' onClick={() => retry()}>
@@ -57,7 +52,7 @@ export function AddFrogStakeTransaction({ status, retry }: StepElementProps) {
 export function AddFrogStakeSuccess() {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-rose-200 p-8 max-w-[500px] border-2 border-white'>
-      <Image width={200} height={200} src={frogBigGirl} alt='froggyWait' unoptimized />
+      <img width={200} height={200} src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/c369925e-f86b-4ec2-db09-eee1b6c7d400/public`} alt='froggyWait'  />
       <p className='text-mc-mahogany-300 text-lg mt-6'>SUCCESS</p>
     </div>
   )

@@ -3,19 +3,22 @@ import Header from "@/components/Header";
 import { Container } from "@/components/Container";
 import BattleButton from "@/components/BattleButton";
 import FactionMeter from "@/components/FactionMeter"
+import { env } from "@/env.mjs";
 
 const MainLogo = () => (
   <footer className='relative z-50 gap-y-2'>
     <Container className='mx-0 ml-auto flex flex-col items-end mb-12 w-[50vw]'>
       <img
         className='w-full'
-        src='https://mucus-images.0xmucushq.workers.dev/frogs-vs-dogs-image.png'
+        src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/0a29e3d4-0333-4052-e778-9f5ed9c86f00/public`}
         alt=""
       />
       <FactionMeter className='mt-6'/>
     </Container> 
   </footer>
 )
+
+console.log(`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/frogs-vs-dogs-image.png/public`)
 
 export default function Page() {
   return (
@@ -26,7 +29,7 @@ export default function Page() {
               <div className='absolute bottom-6 left-10 w-[40vw] 2xl:left-0'>
                 <img
                   className='w-full'
-                  src='https://mucus-images.0xmucushq.workers.dev/frog-big-girl.png'
+                  src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/c369925e-f86b-4ec2-db09-eee1b6c7d400/public`}
                   alt=""
                 />
               </div>
@@ -34,7 +37,7 @@ export default function Page() {
               <div className='absolute top-12 right-16 xl:top-20 xl:right-12 w-[32vw]'>
                 <img
                   className='w-full'
-                  src='https://mucus-images.0xmucushq.workers.dev/dog-big-girl.png'
+                  src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/2642e55e-56d3-4e20-80cb-b5e32a61ab00/public`}
                   alt=""
                 />
               </div> 
@@ -48,7 +51,7 @@ export default function Page() {
           <MainLogo />
         </section>
         <div className='absolute bottom-0 left-0 w-100'>
-          {/* <img className='object-contain' src={footer} alt='' unoptimized /> */}
+          <img className='object-contain' src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/d4513c1c-26fe-41ec-32fa-76d4e0f8df00/public`} alt='' />
         </div>
       </main>
   )

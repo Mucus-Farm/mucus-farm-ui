@@ -36,6 +36,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CHAIN_ID: z.string().min(1),
     NEXT_PUBLIC_HOST: z.string().min(1),
     NEXT_PUBLIC_R2_WORKER_IMAGE_ENDPOINT: z.string().min(1),
+    NEXT_PUBLIC_CF_IMAGES_URL_BASE: z.string().min(1),
   },
 
   /**
@@ -60,6 +61,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_MUCUS_POOL_CONTRACT_ADDRESS,
     NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS:
       process.env.NEXT_PUBLIC_USDC_POOL_CONTRACT_ADDRESS,
+    NEXT_PUBLIC_CF_IMAGES_URL_BASE: process.env.NEXT_PUBLIC_CF_IMAGES_URL_BASE,
 
     NEXT_PUBLIC_ALCHEMY_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,

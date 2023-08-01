@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 // components
 import Header from "@/components/Header"
 import Quantity from "./Quantity"
@@ -7,8 +5,8 @@ import Support from "./Support"
 import Collection from "./Collection"
 import FactionMeter from "@/components/FactionMeter";
 
-// images
-import fndTrading from "@/images/fnd-trading.png"
+// utils
+import { env } from '@/env.mjs'
 
 export default function MucusFarm() {
   return (
@@ -26,12 +24,10 @@ export default function MucusFarm() {
       </div>
 
       <div className='absolute bottom-0 -right-[200px] xl:-right-[200px] 2xl:-right-24 w-[53vw] xl:w-[63vw] 2xl:w-[56vw]'>
-        <Image
+        <img
           className='w-full'
-          src={fndTrading}
+          src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/a21f163c-093e-45a2-2a43-0e89470cf400/public`}
           alt=""
-          unoptimized
-          priority
         />
       </div>
     </section>

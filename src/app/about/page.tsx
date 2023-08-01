@@ -1,11 +1,9 @@
-// import Image from "next/image"
-
 // components
 import { Container } from "@/components/Container";
 import Header from "@/components/Header";
 
-// images
-// import frogGrid from "@/images/frog-grid.png"
+// utils
+import { env } from '@/env.mjs'
 
 const Body = () => {
   return (
@@ -47,7 +45,7 @@ export default function About() {
       <div className='absolute top-1/2 -translate-y-1/2 right-0 w-[45vw] xl:w-[42vw] mt-6 xl:mt-0'>
         <img
           className='w-full'
-          src='https://mucus-images.0xmucushq.workers.dev/frog-grid.png'
+          src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/46f095e9-fb3c-401d-368a-4c4433c1c900/public`}
           alt=""
         />
       </div>

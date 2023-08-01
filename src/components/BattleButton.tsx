@@ -1,24 +1,22 @@
 'use client';
 
-import Image from "next/image";
 import { useState } from "react";
 
 // components
 import { Button } from "@/components/Button";
 import Modal from "@/components/Modal";
 
-// icons
-import XMark from "@/images/XMark.png"
+// utils
+import { env } from '@/env.mjs'
 
 const BattleChoice = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className='relative flex flex-col p-24 rounded-lg bg-mc-pink-300 border-2 border-white'>
       <div className='absolute top-4 right-4 cursor-pointer w-12' onClick={() => onClose()}>
-        <Image
+        <img
           className='w-full'
-          src={XMark}
+          src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/b12020e5-debf-40b6-e623-84c5c183cf00/public`}
           alt=""
-          unoptimized
         />
       </div> 
       <h3 className='text-white font-bold text-4xl tracking-tight'>WHAT WILL YOU CHOOSE</h3>
