@@ -1,3 +1,5 @@
+'use client'
+
 import { Container } from "@/components/Container"
 import type { UserStatsProps } from "./UserStats"
 import type { DepositProps } from './Deposit'

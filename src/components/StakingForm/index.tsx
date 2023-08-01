@@ -1,8 +1,12 @@
+'use client'
+
+import dynamic from "next/dynamic"
+
 // components
 import { Container } from "@/components/Container"
-import UserStats from './UserStats'
-import Deposit from './Deposit'
-import Withdraw from './Withdraw'
+const UserStats = dynamic(() => import("./UserStats"))
+const Deposit = dynamic(() => import("./Deposit"))
+const Withdraw = dynamic(() => import("./Withdraw"))
 
 // utils
 import type { Faction } from '@/utils/constants';

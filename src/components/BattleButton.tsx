@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 // components
 import { Button } from "@/components/Button";
-import Modal from "@/components/Modal";
+const Modal = dynamic(() => import("@/components/Modal"));
 
 // utils
 import { env } from '@/env.mjs'
