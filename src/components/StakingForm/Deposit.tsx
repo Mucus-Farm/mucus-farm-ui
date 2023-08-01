@@ -12,7 +12,7 @@ import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
 import { SlippageDropdown } from './SlippageDropdown'
 import { AddStakeTransaction, type AddStakeValues } from '@/components/transactions/AddStake'
-import { Deposit as SkeletonDeposit } from './Skeleton'
+// import { Deposit as SkeletonDeposit } from './Skeleton'
 import { ConnectWrapper } from '../ConnectWrapper';
 
 // inputs
@@ -40,8 +40,8 @@ export default function Deposit({ faction }: DepositProps) {
   const { address } = useAccount()
   const { data: balance } = useBalance({ address })
   const { chain } = useNetwork()
-  const usdcPrice = useQuery(['fetchEthUscPrice'], fetchEthUsdcPrice, { cacheTime: 0 })
-  const mucusEthPrice = useQuery(['fetchMucusEthPrice'], fetchMucusEthPrice, { cacheTime: 0 })
+  const usdcPrice = useQuery(['fetchEthUscPrice'], fetchEthUsdcPrice, { suspense: true, cacheTime: 0 })
+  const mucusEthPrice = useQuery(['fetchMucusEthPrice'], fetchMucusEthPrice, { suspense: true, cacheTime: 0 })
 
   const methods = useForm<DepositInputs>({
     defaultValues: {
@@ -103,7 +103,8 @@ export default function Deposit({ faction }: DepositProps) {
     if (e.key === 'Enter') e.preventDefault()
   }
 
-  if (!usdcPrice.data || !mucusEthPrice.data || usdcPrice.isLoading || mucusEthPrice.isLoading) return <SkeletonDeposit faction={faction} />
+  // if (!usdcPrice.data || !mucusEthPrice.data || usdcPrice.isLoading || mucusEthPrice.isLoading) return <SkeletonDeposit faction={faction} />
+  if (!usdcPrice.data || !mucusEthPrice.data || usdcPrice.isLoading || mucusEthPrice.isLoading) return null
   return (
     <FormProvider {...methods} >
       <form className={`w-1/2 flex flex-col p-4 rounded-xl ${fcp[faction].text} ${fcp[faction].bg}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>

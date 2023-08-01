@@ -12,7 +12,7 @@ import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
 import { ConnectWrapper } from '@/components/ConnectWrapper';
 import { RemoveStakeTransaction, type RemoveStakeValues } from '@/components/transactions/RemoveStake'
-import { Withdraw as SkeletonWithdraw } from './Skeleton'
+// import { Withdraw as SkeletonWithdraw } from './Skeleton'
 
 // inputs
 import { NumberInput } from "@/components/inputs/NumberInput"
@@ -37,8 +37,8 @@ export default function Withdraw({ faction }: WithdrawProps) {
   const { address } = useAccount()
   const { chain } = useNetwork()
 
-  const lpTokenUsdcPrice = useQuery(['fetchLPTokenUsdcPrice'], fetchLPTokenUsdcPrice, { cacheTime: 0 })
-  const staker = useQuery(['getStaker', address], () => getStaker(address!), { cacheTime: 0, enabled: !!address })
+  const lpTokenUsdcPrice = useQuery(['fetchLPTokenUsdcPrice'], fetchLPTokenUsdcPrice, { suspense: true, cacheTime: 0 })
+  const staker = useQuery(['getStaker', address], () => getStaker(address!), { suspense: true, cacheTime: 0, enabled: !!address })
   const userDeposit = faction === 'DOG' ? staker?.data?.dogFactionAmount : staker?.data?.frogFactionAmount
 
   const { handleSubmit, register, watch, setValue, formState: { errors } } = useForm<WithdrawInputs>({
@@ -95,7 +95,8 @@ export default function Withdraw({ faction }: WithdrawProps) {
     if (e.key === 'Enter') e.preventDefault()
   }
 
-  if (!lpTokenUsdcPrice.data || lpTokenUsdcPrice.isLoading) return <SkeletonWithdraw faction={faction} />
+  // if (!lpTokenUsdcPrice.data || lpTokenUsdcPrice.isLoading) return <SkeletonWithdraw faction={faction} />
+  if (!lpTokenUsdcPrice.data || lpTokenUsdcPrice.isLoading) return null
   return (
     <form className={`w-1/2 flex flex-col ${fcp[faction].text}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
       <Modal open={show} onClose={() => setShow(false)}>

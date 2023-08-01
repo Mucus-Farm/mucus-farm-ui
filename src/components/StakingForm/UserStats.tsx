@@ -4,7 +4,7 @@ import { useQuery, useAccount  } from 'wagmi'
 import { formatEther } from 'viem'
 
 // components
-import { UserStats as SkeletonUserStats } from './Skeleton';
+// import { UserStats as SkeletonUserStats } from './Skeleton';
 
 // api
 import { getStaker, getTotalStaked } from '@/api/dpsMethods';
@@ -27,7 +27,7 @@ export default function UserStats({ faction }: UserStatsProps) {
   const userDeposit = faction === 'DOG' ? staker?.dogFactionAmount : staker?.frogFactionAmount
   const stakerTradingRewards = 4
 
-  if (!lpTokenUsdcPrice || !totalStaked || !staker) return <SkeletonUserStats faction={faction} />
+  // if (!lpTokenUsdcPrice || !totalStaked || !staker) return <SkeletonUserStats faction={faction} />
   return (
     <div className={`flex flex-col ${fcp[faction].bg} rounded-xl p-6`}>
       <h2 className={`${fcp[faction].text} font-bold tracking-tight text-center 2xl:text-3xl xl:text-2xl`}>{faction === 'DOG' ? 'LETS MAKE A DEAL' : 'LETS MAKE A PROMISE'}</h2>

@@ -1,12 +1,13 @@
 'use client'
 
-import dynamic from "next/dynamic"
+import { lazy, Suspense } from "react"
 
 // components
 import { Container } from "@/components/Container"
-const UserStats = dynamic(() => import("./UserStats"))
-const Deposit = dynamic(() => import("./Deposit"))
-const Withdraw = dynamic(() => import("./Withdraw"))
+import * as Skeleton from "./Skeleton"
+const UserStats = lazy(() => import("./UserStats"))
+const Deposit = lazy(() => import("./Deposit"))
+const Withdraw = lazy(() => import("./Withdraw"))
 
 // utils
 import type { Faction } from '@/utils/constants';
@@ -30,12 +31,18 @@ export type StakingFormProps = { faction: Faction }
 export default function StakingForm({ faction }: StakingFormProps) {
   return (
     <Container className='flex-grow flex flex-col p-4 gap-y-6 2xl:gap-y-10 w-[65vw] xl:w-[60vw] 2xl:w-[50vw] mx-0 mr-auto mt-6 xl:mt-8 2xl:mt-12'>
-      <UserStats faction={faction} />
+      <Suspense fallback={<Skeleton.UserStats faction={faction}/>}>
+        <UserStats faction={faction} />
+      </Suspense>
 
       <div className='flex-grow flex gap-x-6 2xl:gap-x-10'>
-        <Deposit faction={faction}/>
+        <Suspense fallback={<Skeleton.Deposit faction={faction}/>}>
+          <Deposit faction={faction}/>
+        </Suspense> 
 
-        <Withdraw faction={faction} />
+        <Suspense fallback={<Skeleton.Withdraw faction={faction}/>}>
+          <Withdraw faction={faction} />
+        </Suspense>
       </div> 
     </Container>
   )
