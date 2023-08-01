@@ -1,5 +1,4 @@
 // components
-import Header from "@/components/Header";
 import { Container } from "@/components/Container";
 import BattleButton from "@/components/BattleButton";
 import FactionMeter from "@/components/FactionMeter"
@@ -22,7 +21,7 @@ console.log(`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/frogs-vs-dogs-image.png/publi
 
 export default function Page() {
   return (
-      <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden">
+      <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden pt-[75px] xl:pt-[75px] 2xl:pt-[75px]"> 
         <section className='relative flex-grow flex flex-col'>
           <div className='absolute inset-0'>
             <div className="relative h-full max-w-7xl xl:max-w-[1600px] mx-auto">
@@ -44,7 +43,6 @@ export default function Page() {
             </div> 
           </div> 
 
-          <Header />
           <Container className='flex-grow flex flex-col gap-y-1 justify-center items-center z-20'>
             <BattleButton />
           </Container>

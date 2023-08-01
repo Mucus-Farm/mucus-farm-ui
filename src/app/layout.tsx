@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { Goldman } from "next/font/google";
 import { Providers } from "@/components/Providers";
+import Header from "@/components/Header";
 
 const goldman = Goldman({
   weight: ["400", "700"],
@@ -23,6 +24,7 @@ export default function RootLayout({
 
       <body>
         <Providers>
+          <Header />
           {children}
         </Providers> 
       </body> 

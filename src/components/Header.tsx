@@ -24,9 +24,9 @@ const IconHolder = ({ children, href, onClick }: IconHolderProps) => (
 
 export default function Header() {
   return (
-    <header>
-      <Container>
-        <nav className='relative z-50 flex justify-between items-center'>
+    <header className='absolute top-0 inset-x-0 flex items-center px-3 xl:px-8 2xl:px-10 h-[125px]'>
+      <Container className="flex-grow mx-0 max-w-none xl:max-w-none">
+        <nav className='flex-grow relative z-50 flex justify-between items-center'>
           <div className='flex gap-x-4'>
             <Back />
             <IconHolder href='/about' >

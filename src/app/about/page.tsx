@@ -1,6 +1,5 @@
 // components
 import { Container } from "@/components/Container";
-import Header from "@/components/Header";
 
 // utils
 import { env } from '@/env.mjs'
@@ -38,8 +37,7 @@ const Body = () => {
 
 export default function About() {
   return (
-    <section className="relative min-h-screen bg-mc-orange-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden overflow-y-hidden">
-      <Header />
+    <section className="relative min-h-screen bg-mc-orange-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden overflow-y-hidden pt-[75px] xl:pt-[75px] 2xl:pt-[75px]"> 
       <Body />
 
       <div className='absolute top-1/2 -translate-y-1/2 right-0 w-[45vw] xl:w-[42vw] mt-6 xl:mt-0'>
