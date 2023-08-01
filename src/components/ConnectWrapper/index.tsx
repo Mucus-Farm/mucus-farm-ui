@@ -14,6 +14,5 @@ export const ConnectWrapper = dynamic(() => Promise.resolve(({ className, childr
 
   return <ConnectButton className={twMerge('border border-white text-mc-mahogany-300/60', className)} loadingClassName='bg-mc-rose-400'/> 
 }), { 
-  ssr: false,
   loading: () => <Skeleton />,
 })
