@@ -95,10 +95,9 @@ export default function Withdraw({ faction }: WithdrawProps) {
     if (e.key === 'Enter') e.preventDefault()
   }
 
-  // if (!lpTokenUsdcPrice.data || lpTokenUsdcPrice.isLoading) return <SkeletonWithdraw faction={faction} />
   if (!lpTokenUsdcPrice.data || lpTokenUsdcPrice.isLoading) return null
   return (
-    <form className={`w-1/2 flex flex-col ${fcp[faction].text}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
+    <form className={`w-[400px] flex flex-col ${fcp[faction].text}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
       <Modal open={show} onClose={() => setShow(false)}>
         <RemoveStakeTransaction {...transactionValues!} onClose={() => setShow(false)}/>
       </Modal>
@@ -123,7 +122,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
           >
             MAX
           </Button>
-          <ConnectWrapper className='bg-white/50'>
+          <ConnectWrapper className='w-full bg-white/50'>
             <Button 
               className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 w-full transition-all ${withdrawValidation() ? 'opacity-60' : ''}`}
               type='submit'
@@ -133,9 +132,9 @@ export default function Withdraw({ faction }: WithdrawProps) {
           </ConnectWrapper> 
         </div>
       </div>
-      <p className={`text-sm 2xl:text-lg text-center whitespace-nowrap ${fcp[faction].text} mt-6`}>
+      {/* <p className={`text-xs 2xl:text-md text-center whitespace-nowrap ${fcp[faction].text} mt-6`}>
         YOU MAY QUALIFY FOR A FREE MINT
-      </p>
+      </p> */}
       <Button className={`bg-white/50 border border-white py-4 text-lg 2xl:text-2xl ${fcp[faction].text} w-full mt-1`}>
         MUCUS GENERATOR
       </Button>

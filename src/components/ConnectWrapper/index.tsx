@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { ConnectButton } from '@/components/ConnectButton';
 
-export const Skeleton = () => <div className='h-6 w-full bg-mc-rose-400 rounded-full animate-pulse' /> 
+export const Skeleton = () => <div className='h-9 w-full bg-mc-rose-400 rounded-lg animate-pulse' /> 
 
 export const ConnectWrapper = dynamic(() => Promise.resolve(({ className, children }: { className?: string; children: React.ReactNode }) => {
   const { address } = useAccount()

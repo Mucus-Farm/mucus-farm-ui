@@ -103,11 +103,10 @@ export default function Deposit({ faction }: DepositProps) {
     if (e.key === 'Enter') e.preventDefault()
   }
 
-  // if (!usdcPrice.data || !mucusEthPrice.data || usdcPrice.isLoading || mucusEthPrice.isLoading) return <SkeletonDeposit faction={faction} />
   if (!usdcPrice.data || !mucusEthPrice.data || usdcPrice.isLoading || mucusEthPrice.isLoading) return null
   return (
     <FormProvider {...methods} >
-      <form className={`w-1/2 flex flex-col p-4 rounded-xl ${fcp[faction].text} ${fcp[faction].bg}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
+      <form className={`flex-grow flex flex-col p-4 rounded-xl ${fcp[faction].text} ${fcp[faction].bg}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
         <Modal open={show} onClose={() => setShow(false)}>
           <AddStakeTransaction {...transactionValues!} onClose={() => setShow(false)} />
         </Modal>
