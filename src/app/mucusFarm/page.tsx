@@ -7,6 +7,8 @@ import FactionMeter from "@/components/FactionMeter";
 // utils
 import { env } from '@/env.mjs'
 
+export const runtime = 'edge';
+
 export default function MucusFarm() {
   return (
     <section className='relative min-h-screen flex flex-col bg-mc-brown-200 px-3 py-6 xl:px-8 xl:py-8 2xl:px-10 2xl:py-10 overflow-hidden pt-[75px] xl:pt-[75px] 2xl:pt-[75px]'> 

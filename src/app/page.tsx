@@ -4,6 +4,8 @@ import BattleButton from "@/components/BattleButton";
 import FactionMeter from "@/components/FactionMeter"
 import { env } from "@/env.mjs";
 
+export const runtime = 'edge';
+
 const MainLogo = () => (
   <footer className='relative z-50 gap-y-2'>
     <Container className='mx-0 ml-auto flex flex-col items-end mb-12 w-[50vw]'>

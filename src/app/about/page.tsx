@@ -4,6 +4,8 @@ import { Container } from "@/components/Container";
 // utils
 import { env } from '@/env.mjs'
 
+export const runtime = 'edge';
+
 const Body = () => {
   return (
     <Container className='flex p-12'>
