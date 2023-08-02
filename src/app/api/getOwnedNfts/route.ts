@@ -5,6 +5,8 @@ import { sql, asc } from "drizzle-orm";
 
 type Cursor = number | undefined;
 
+export const runtime = 'edge';
+
 const getTypeFilter = (address: string) => ({
   'DOG': sql`${owners.address} = ${address} AND ${owners.id} % 2 = 0 AND ${owners.id} < 6000`,
   'FROG': sql`${owners.address} = ${address} AND ${owners.id} % 2 != 0 AND ${owners.id} < 6000`,

@@ -6,6 +6,7 @@ import { env } from '@/env.mjs';
 import { dpsAbiTypings } from '@/abis/dps';
 
 export const revalidate = 60;
+export const runtime = 'edge';
  
 export async function GET() {
   const totalDogFactionAmountPromise = publicClient.readContract({

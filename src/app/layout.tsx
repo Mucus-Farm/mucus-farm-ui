@@ -9,6 +9,8 @@ const goldman = Goldman({
   variable: "--font-goldman"
 })
 
+export const runtime = 'edge';
+
 export default function RootLayout({
   children,
 }: {
