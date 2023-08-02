@@ -25,14 +25,14 @@ const BattleChoice = ({ onClose }: { onClose: () => void }) => {
       <div className='flex gap-x-16 mt-16'>
         <div className='flex flex-col'>
           <p className='text-white text-sm'>HELP US PLEASE!</p>
-          <Button className='px-8 py-4 bg-mc-green-200 border-2 border-white' href='/frogPond'>
+          <Button className='px-8 py-4 bg-mc-green-200 hover:bg-[#C0E28D] active:bg-[#AED96D] border-2 border-white' href='/frogPond'>
             <p className='text-white font-bold text-3xl'>FROG POND</p>
           </Button>
         </div>
 
         <div className='flex flex-col'>
           <p className='text-white text-sm'>WE CAN WIN!</p>
-          <Button className='px-8 py-4 bg-mc-orange-300 border-2 border-white' href='/dogPark'>
+          <Button className='px-8 py-4 bg-mc-orange-300/80 hover:bg-mc-orange-300 active:bg-mc-orange-300/60 border-2 border-white' href='/dogPark'>
             <p className='text-white font-bold text-3xl'>DOG PARK</p>
           </Button>
         </div>
@@ -50,7 +50,7 @@ export default function Body() {
       </Modal>
 
       <p className='text-xs text-white xl:text-base'>{'FROGS'} ARE WINNING</p>
-      <Button className='bg-mc-pink-300 border-2 border-white cursor-pointer rounded-xl' onClick={() => setShow(true)}>
+      <Button className='bg-mc-pink-300/80 hover:bg-mc-pink-300/60 active:bg-mc-pink-300 border-2 border-white cursor-pointer rounded-xl' onClick={() => setShow(true)}>
         <p className='text-white font-bold text-lg xl:text-2xl xl:px-3 xl:py-1'>JOIN THE BATTLE</p>
       </Button>
     </> 

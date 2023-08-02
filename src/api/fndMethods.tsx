@@ -110,10 +110,6 @@ export const useTransform = () => {
   const write = async ({ tokenIds, transformationType, stake }: Transform) => {
     if (!transform.writeAsync) return
 
-    console.log("tokenIds: ", tokenIds)
-    console.log("transformation type: ", transformationType)
-    console.log("stake: ", stake)
-
     const tx = await transform.writeAsync({ args: [tokenIds, transformationType, stake] })
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })

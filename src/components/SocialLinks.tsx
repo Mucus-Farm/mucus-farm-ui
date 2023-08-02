@@ -13,7 +13,7 @@ type IconHolderProps = {
   onClick?: () => void;
 }
 const IconHolder = ({ children, href, onClick }: IconHolderProps) => (
-  <Button className='px-6 border-2 border-white rounded-lg bg-mc-brown-300' href={href} onClick={onClick} >
+  <Button className='px-6 border-2 border-white rounded-lg bg-mc-brown-300/90 hover:bg-mc-brown-300/80 active:bg-mc-brown-300' href={href} onClick={onClick} >
     {children}
   </Button>
 )

@@ -17,8 +17,6 @@ const MainLogo = () => (
   </footer>
 )
 
-console.log(`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/frogs-vs-dogs-image.png/public`)
-
 export default function Page() {
   return (
       <main className="min-h-screen flex flex-col justify-center bg-mc-pink-200 px-3 py-6 xl:py-8 xl:px-8 2xl:px-10 2xl:py-10 overflow-x-hidden pt-[75px] xl:pt-[75px] 2xl:pt-[75px]"> 

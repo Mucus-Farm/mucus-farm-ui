@@ -12,7 +12,6 @@ import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
 import { SlippageDropdown } from './SlippageDropdown'
 import { AddStakeTransaction, type AddStakeValues } from '@/components/transactions/AddStake'
-// import { Deposit as SkeletonDeposit } from './Skeleton'
 import { ConnectWrapper } from '../ConnectWrapper';
 
 // inputs
@@ -163,7 +162,7 @@ export default function Deposit({ faction }: DepositProps) {
         <div className='flex-grow flex items-end'>
           <ConnectWrapper className='bg-white/50 justify-self-end w-full mt-4'>
             <Button 
-              className={`justify-self-end bg-white/50 border border-white ${fcp[faction].text}/60 w-full transition-all mt-4 ${depositValidation() ? 'opacity-60' : ''}`}
+              className={`justify-self-end bg-white/50 border border-white ${fcp[faction].text}/60 w-full transition-all mt-4 ${depositValidation() ? 'opacity-60' : 'hover:bg-white/40 active:bg-white/60'}`}
               type='submit'
             >
               {depositMessage()}

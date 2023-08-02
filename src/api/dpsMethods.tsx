@@ -77,6 +77,55 @@ export function useRemoveStake() {
   }
 }
 
+export function useClaim() {
+  const claim = useContractWrite({
+    address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
+    abi: dpsAbi,
+    functionName: 'claim',
+    chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
+  })
+
+  const write = async () => {
+    if (!claim.writeAsync) return
+    const tx = await claim.writeAsync()
+    const receipt = await waitForTransaction(tx)
+
+    return receipt
+  }
+
+  return {
+    ...claim,
+    write,
+  }
+}
+
+type Vote = {
+  amount: bigint;
+  faction: Faction;
+}
+export function useVote() {
+  const vote = useContractWrite({
+    address: env.NEXT_PUBLIC_DPS_CONTRACT_ADDRESS as `0x${string}`,
+    abi: dpsAbi,
+    functionName: 'vote',
+    chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
+  })
+
+  const write = async ({ amount, faction }: Vote) => {
+    if (!vote.writeAsync) return
+    const tx = await vote.writeAsync({ args: [amount, faction === 'DOG' ? 0 : 1] })
+    const receipt = await waitForTransaction(tx)
+    await queryClient.invalidateQueries({ queryKey: ['getStaker'] })
+
+    return receipt
+  }
+
+  return {
+    ...vote,
+    write,
+  }
+}
+
 export const getStaker = async (stakerAddress: `0x${string}`) => {
   const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
   const [

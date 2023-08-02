@@ -34,18 +34,15 @@ export default function StakingForm({ faction }: StakingFormProps) {
       <Suspense fallback={<Skeleton.UserStats faction={faction}/>}>
         <UserStats faction={faction} />
       </Suspense>
-      {/* <Skeleton.UserStats faction={faction} /> */}
 
       <div className='flex-grow flex gap-x-6 2xl:gap-x-10'>
         <Suspense fallback={<Skeleton.Deposit faction={faction}/>}>
           <Deposit faction={faction}/>
         </Suspense> 
-        {/* <Skeleton.Deposit faction={faction}/> */}
 
         <Suspense fallback={<Skeleton.Withdraw faction={faction}/>}>
           <Withdraw faction={faction} />
         </Suspense>
-        {/* <Skeleton.Withdraw faction={faction} /> */}
       </div> 
     </Container>
   )

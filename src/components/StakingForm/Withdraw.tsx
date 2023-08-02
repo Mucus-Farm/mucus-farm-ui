@@ -12,7 +12,7 @@ import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
 import { ConnectWrapper } from '@/components/ConnectWrapper';
 import { RemoveStakeTransaction, type RemoveStakeValues } from '@/components/transactions/RemoveStake'
-// import { Withdraw as SkeletonWithdraw } from './Skeleton'
+import { ClaimTransaction } from '@/components/transactions/Claim';
 
 // inputs
 import { NumberInput } from "@/components/inputs/NumberInput"
@@ -32,7 +32,8 @@ export type WithdrawProps = { faction: Faction }
 export default function Withdraw({ faction }: WithdrawProps) {
   const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
-  const [show, setShow] = useState<boolean>(false)
+  const [showRemoveStake, setShowRemoveStake] = useState<boolean>(false)
+  const [showClaim, setShowClaim] = useState<boolean>(false)
   const [transactionValues, setTransactionValues] = useState<RemoveStakeValues | null>(null)
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -54,7 +55,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
     if (withdrawValidation()) return
     const { withdraw } = data
     setTransactionValues({ withdrawAmount: withdraw, faction })
-    setShow(true)
+    setShowRemoveStake(true)
   }
 
   const withdrawMessage = () => {
@@ -98,8 +99,12 @@ export default function Withdraw({ faction }: WithdrawProps) {
   if (!lpTokenUsdcPrice.data || lpTokenUsdcPrice.isLoading) return null
   return (
     <form className={`w-[400px] flex flex-col ${fcp[faction].text}`} onSubmit={handleSubmit(onSubmit)} onKeyDown={e => handleKeyDown(e)}>
-      <Modal open={show} onClose={() => setShow(false)}>
-        <RemoveStakeTransaction {...transactionValues!} onClose={() => setShow(false)}/>
+      <Modal open={showRemoveStake} onClose={() => setShowRemoveStake(false)}>
+        <RemoveStakeTransaction {...transactionValues!} onClose={() => setShowRemoveStake(false)}/>
+      </Modal>
+
+      <Modal open={showClaim} onClose={() => setShowClaim(false)}>
+        <ClaimTransaction faction={faction} onClose={() => setShowRemoveStake(false)}/>
       </Modal>
 
       <div className={`${fcp[faction].bg} p-4 rounded-xl`}>
@@ -124,7 +129,7 @@ export default function Withdraw({ faction }: WithdrawProps) {
           </Button>
           <ConnectWrapper className='w-full bg-white/50'>
             <Button 
-              className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 w-full transition-all ${withdrawValidation() ? 'opacity-60' : ''}`}
+              className={`p-2 font-bold border border-white rounded-xl text-mahogany/60 bg-white/50 w-full transition-all ${withdrawValidation() ? 'opacity-60' : 'hover:bg-white/40 active:bg-white/60'}`}
               type='submit'
             >
               {withdrawMessage()}
@@ -132,12 +137,16 @@ export default function Withdraw({ faction }: WithdrawProps) {
           </ConnectWrapper> 
         </div>
       </div>
-      {/* <p className={`text-xs 2xl:text-md text-center whitespace-nowrap ${fcp[faction].text} mt-6`}>
-        YOU MAY QUALIFY FOR A FREE MINT
-      </p> */}
-      <Button className={`bg-white/50 border border-white py-4 text-lg 2xl:text-2xl ${fcp[faction].text} w-full mt-1`}>
-        MUCUS GENERATOR
-      </Button>
+      {address && (
+        <div className='flex flex-col gap-y-1 mt-6'>
+          {/* <p className={`text-xs 2xl:text-md text-center whitespace-nowrap ${fcp[faction].text}`}>
+            YOU MAY QUALIFY FOR A FREE MINT
+          </p> */}
+          <Button onClick={() => setShowClaim(true)} className={`bg-white/50 border hover:bg-white/40 active:bg-white/60 border-white py-4 text-lg 2xl:text-2xl ${fcp[faction].text} w-full`}>
+            MUCUS GENERATOR
+          </Button>
+        </div> 
+      )} 
     </form>
   )
 }

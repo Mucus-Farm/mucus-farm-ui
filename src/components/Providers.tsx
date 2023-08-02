@@ -1,6 +1,7 @@
 'use client'
 
 import { QueryClient } from "@tanstack/react-query";
+import NextTopLoader from 'nextjs-toploader'
 import '@rainbow-me/rainbowkit/styles.css';
 import { env } from "@/env.mjs";
 
@@ -49,6 +50,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
+        <NextTopLoader color='#EC9244' />
         {children}
         {transactionState === 'SUCCESS' && <SuccessToast />}
         {transactionState === 'FAILED' && <FailToast errorMessage={errorMessage}/>}
