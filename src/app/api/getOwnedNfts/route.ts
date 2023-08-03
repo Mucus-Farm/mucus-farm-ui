@@ -36,5 +36,7 @@ export async function POST(request: Request) {
     nextCursor = nextNft!.id
   }
 
+  console.log("nfts: ", nfts)
+
   return NextResponse.json({ nfts, nextCursor })
 }

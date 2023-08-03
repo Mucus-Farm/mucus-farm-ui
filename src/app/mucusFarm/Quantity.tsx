@@ -1,5 +1,6 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod'
@@ -9,12 +10,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 // components
 import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
-import { ConnectWrapper } from '@/components/ConnectWrapper';
+import { ConnectWrapperSkeleton } from '@/components/ConnectWrapper';
+const ConnectWrapper = dynamic(() => import('@/components/ConnectWrapper'), { loading: () => <ConnectWrapperSkeleton className='bg-black/40 w-24'/>})
 import { MintTransaction, type MintValues  } from '@/components/transactions/Mint'
 
 // inputs
 import { NumberInput } from "@/components/inputs/NumberInput";
-import { Checkbox } from "@/components/inputs/Checkbox";
 
 // hooks
 import useFaction from '@/hooks/useFaction';
@@ -28,7 +29,6 @@ import { getMinted, getPublicMintStarted } from '@/api/fndMethods';
 
 const quantityInputs = z.object({ 
   quantity: z.string().min(1).refine(value => Number(value) > 0, 'MUST BE GREATER THAN ZERO'),
-  stake: z.boolean(),
 })
 type QuantityInputs = z.infer<typeof quantityInputs>
 export default function Quantity() {
@@ -36,8 +36,8 @@ export default function Quantity() {
   const [transactionValues, setTransactionValues] = useState<MintValues | null>(null)
   const faction = useFaction(state => state.faction)
   const { chain } = useNetwork()
-  const minted = useQuery(['getMinted'], getMinted, { cacheTime: 0 })
-  const publicMintStarted = useQuery(['getPublicMintStarted'], getPublicMintStarted, { cacheTime: 0 })
+  const minted = useQuery(['getMinted'], getMinted, { cacheTime: 0, suspense: true })
+  const publicMintStarted = useQuery(['getPublicMintStarted'], getPublicMintStarted, { cacheTime: 0, suspense: true })
 
   const whitelistMintCap = 1000;
   const tokensPaidInEth = 2000;
@@ -47,7 +47,6 @@ export default function Quantity() {
   const { handleSubmit, register, watch, formState: { errors } } = useForm<QuantityInputs>({
     defaultValues: {
       quantity: '',
-      stake: false,
     },
     resolver: zodResolver(quantityInputs),
   })
@@ -55,10 +54,9 @@ export default function Quantity() {
 
   const onSubmit: SubmitHandler<QuantityInputs> = (data) => {
     if (mintValidation()) return
-    const { quantity, stake } = data
+    const { quantity } = data
     setTransactionValues({
       amount: Number(quantity),
-      stake,
       value: String(ethMintPrice * Number(quantity)),
       publicMintStarted: publicMintStarted.data!,
       minted: Number(minted.data!),
@@ -110,13 +108,7 @@ export default function Quantity() {
         <MintTransaction {...transactionValues!} onClose={() => setShow(false)} />
       </Modal>
 
-      <div className='flex justify-between items-baseline'>
-        <h3 className='2xl:text-lg xl:text-md font-bold tracking-tight'>QUANTITY</h3>
-        <div className='flex items-center gap-x-2'>
-          <p className='text-small'>STAKE</p>
-          <Checkbox name='stake' register={register} className={`bg-white/60 mb-[2px] ${fcp[faction].accent}`}/>
-        </div>
-      </div>
+      <h3 className='2xl:text-lg xl:text-md font-bold tracking-tight'>QUANTITY</h3>
 
       <div className='flex justify-between items-center rounded-xl px-4 2xl:h-16 h-12 bg-black/25'>
         <div className='flex flex-col'>

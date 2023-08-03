@@ -1,5 +1,6 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +13,8 @@ import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
 import { SlippageDropdown } from './SlippageDropdown'
 import { AddStakeTransaction, type AddStakeValues } from '@/components/transactions/AddStake'
-import { ConnectWrapper } from '../ConnectWrapper';
+import { ConnectWrapperSkeleton } from '@/components/ConnectWrapper';
+const ConnectWrapper = dynamic(() => import('@/components/ConnectWrapper'), { loading: () => <ConnectWrapperSkeleton />})
 
 // inputs
 import { NumberInput } from "@/components/inputs/NumberInput"

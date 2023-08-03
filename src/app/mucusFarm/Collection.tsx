@@ -1,12 +1,20 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useInfiniteQuery, useAccount } from 'wagmi'
 import type { UseInfiniteQueryResult } from '@tanstack/react-query'
 
+// utils
+import { factionColorPalette as fcp } from './utils';
+import { env } from '@/env.mjs'
+import type { Owner } from '@/db/schema'
+import type { Faction } from '@/utils/constants'
+
 // components
 import { Button } from "@/components/Button"
-import { ConnectWrapper } from '@/components/ConnectWrapper';
+import { ConnectWrapperSkeleton } from '@/components/ConnectWrapper'
+const ConnectWrapper = dynamic(() => import('@/components/ConnectWrapper'), { loading: () => <ConnectWrapperSkeleton className='justify-self-center bg-black/40 mx-auto w-24'/> })
 import Modal from '@/components/Modal'
 import { AddManyToMucusFarmTransaction } from '@/components/transactions/AddManyToMucusFarm'
 import { ClaimManyTransaction } from '@/components/transactions/ClaimMany'
@@ -15,12 +23,6 @@ import { TransformTransaction } from '@/components/transactions/Transform'
 // hooks
 import useFaction from '@/hooks/useFaction';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-
-// utils
-import { factionColorPalette as fcp } from './utils';
-import { env } from '@/env.mjs'
-import type { Owner } from '@/db/schema'
-import type { Faction } from '@/utils/constants'
 
 type Cursor = number | undefined
 const getOwnedNfts = async (address: `0x${string}`, type: 'DOG' | 'FROG' | 'CHAD' | 'GIGA', cursor: Cursor) => {
@@ -117,6 +119,8 @@ export default function Collection() {
   const { observer, lastElementRef: lastNftRef } = useIntersectionObserver(ownedNfts as unknown as UseInfiniteQueryResult)
   const allOwnedNfts = ownedNfts.data?.pages.reduce((acc, page) => [...acc, ...(page?.nfts ?? [])], [] as Owner[]) || []
 
+  console.log("owned NFTs: ", ownedNfts)
+
   return (
     <div className={`flex-grow relative flex flex-col items-center p-4 rounded-xl bg-mc-black-500 ${fcp[faction].text}`} >
       <div className='absolute top-4 inset-x-0 flex justify-between px-4'>
@@ -134,7 +138,7 @@ export default function Collection() {
       </div>
 
       <div className='flex flex-grow px-4 mt-6 w-full'>
-        <div className='relative flex-grow flex flex-wrap p-10 gap-8 bg-black/25 rounded-xl overflow-y-scroll scrollbar scrollbar-thumb-gray-900 scrollbar-track-transparent'>
+        <div className='h-[350px] relative flex-grow flex flex-wrap p-10 gap-8 bg-black/25 rounded-xl overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent'>
           {getNftImages(allOwnedNfts).map(({ id, image, staked }, i) => (
             <div
               onClick={() => setSelectedNfts(prev => prev.includes(id) ? prev.filter(nftId => nftId !== id) : [...prev, id])}

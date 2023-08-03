@@ -38,7 +38,6 @@ const tokensPaidInEth = 2000;
 
 export type MintValues = {
   amount: number;
-  stake: boolean;
   value?: string;
   publicMintStarted: boolean;
   minted: number;
@@ -57,13 +56,13 @@ const useMintAction = ({ publicMintStarted, minted }: { publicMintStarted: boole
   return mint
 }
 
-export const MintTransaction = ({ amount, stake, value, publicMintStarted, minted, onClose }: MintTransactionProps) => {
+export const MintTransaction = ({ amount, value, publicMintStarted, minted, onClose }: MintTransactionProps) => {
   const mint = useMintAction({ publicMintStarted, minted })
 
   const steps = [
     {
       stepElement: MintTransactionStep,
-      action: () => mint.write({ amount, stake, value })
+      action: () => mint.write({ amount, value })
     },
     {
       stepElement: MintSuccess,

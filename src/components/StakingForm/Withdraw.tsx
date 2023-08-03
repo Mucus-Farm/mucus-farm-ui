@@ -1,5 +1,6 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +11,8 @@ import { formatEther } from 'viem';
 // components
 import { Button } from "@/components/Button"
 import Modal from '@/components/Modal'
-import { ConnectWrapper } from '@/components/ConnectWrapper';
+import { ConnectWrapperSkeleton } from '@/components/ConnectWrapper';
+const ConnectWrapper = dynamic(() => import('@/components/ConnectWrapper'), { loading: () => <ConnectWrapperSkeleton />})
 import { RemoveStakeTransaction, type RemoveStakeValues } from '@/components/transactions/RemoveStake'
 import { ClaimTransaction } from '@/components/transactions/Claim';
 

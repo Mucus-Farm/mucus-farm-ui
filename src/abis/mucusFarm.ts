@@ -170,11 +170,6 @@ export const mucusFarmAbi =  [
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "parent",
-        "type": "address"
-      },
-      {
         "internalType": "uint256[]",
         "name": "tokenIds",
         "type": "uint256[]"

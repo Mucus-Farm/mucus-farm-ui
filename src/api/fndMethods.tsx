@@ -13,7 +13,6 @@ import { parseEther } from 'viem'
 
 type Mint = {
   amount: number;
-  stake: boolean;
   value?: string;
 }
 
@@ -26,7 +25,7 @@ export const useWhitelistMint = () => {
     chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
-  const write = async ({ amount, stake }: Mint) => {
+  const write = async ({ amount }: Mint) => {
     if (!whitelistMint.writeAsync || !address) return
 
     const proof = computeMerkleProof(address)
@@ -52,10 +51,10 @@ export const useMint = () => {
     chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
-  const write = async ({ amount, stake, value }: Mint) => {
+  const write = async ({ amount, value }: Mint) => {
     if (!mint.writeAsync) return
 
-    const tx = await mint.writeAsync({ args: [amount, stake], value: parseEther(value!) }) 
+    const tx = await mint.writeAsync({ args: [amount], value: parseEther(value!) }) 
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
     await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
@@ -77,10 +76,10 @@ export const useBreedAndAdopt = () => {
     chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
-  const write = async ({ amount, stake }: Mint) => {
+  const write = async ({ amount }: Mint) => {
     if (!breedAndAdopt.writeAsync) return
 
-    const tx = await breedAndAdopt.writeAsync({ args: [amount, stake] })
+    const tx = await breedAndAdopt.writeAsync({ args: [amount] })
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
     await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
@@ -97,7 +96,6 @@ export const useBreedAndAdopt = () => {
 type Transform = {
   tokenIds: bigint[];
   transformationType: number;
-  stake: boolean;
 }
 export const useTransform = () => {
   const transform = useContractWrite({
@@ -107,7 +105,7 @@ export const useTransform = () => {
     chainId: Number(env.NEXT_PUBLIC_CHAIN_ID),
   })
 
-  const write = async ({ tokenIds, transformationType, stake }: Transform) => {
+  const write = async ({ tokenIds, transformationType }: Transform) => {
     if (!transform.writeAsync) return
 
     const tx = await transform.writeAsync({ args: [tokenIds, transformationType, stake] })
