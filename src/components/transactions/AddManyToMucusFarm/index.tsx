@@ -36,15 +36,16 @@ export function AddManyToMucusFarmSuccess() {
 
 export type AddManyToMucusFarmValues = {
   tokenIds: number[];
+  selectAll: boolean;
 }
 type AddManyToMucusFarmTransactionProps = AddManyToMucusFarmValues & { onClose: () => void; }
-export const AddManyToMucusFarmTransaction = ({ tokenIds, onClose }: AddManyToMucusFarmTransactionProps) => {
+export const AddManyToMucusFarmTransaction = ({ tokenIds, selectAll, onClose }: AddManyToMucusFarmTransactionProps) => {
   const addManyToMucusFarm = useAddManyToMucusFarm()
 
   const steps = [
     {
       stepElement: AddManyToMucusFarmTransactionStep,
-      action: () => addManyToMucusFarm.write({ tokenIds: tokenIds.map(id => BigInt(id)) })
+      action: () => addManyToMucusFarm.write({ tokenIds: tokenIds.map(id => BigInt(id)), selectAll })
     },
     {
       stepElement: AddManyToMucusFarmSuccess,

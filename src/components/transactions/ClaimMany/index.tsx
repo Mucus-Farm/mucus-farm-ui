@@ -35,15 +35,16 @@ export function ClaimManySuccess() {
 export type ClaimManyValues = {
   tokenIds: number[];
   unStake: boolean;
+  selectAll: boolean;
 }
 type ClaimManyTransactionProps = ClaimManyValues & { onClose: () => void; }
-export const ClaimManyTransaction = ({ tokenIds, unStake, onClose }: ClaimManyTransactionProps) => {
+export const ClaimManyTransaction = ({ tokenIds, unStake, selectAll, onClose }: ClaimManyTransactionProps) => {
   const claimMany = useClaimMany()
 
   const steps = [
     {
       stepElement: ClaimManyTransactionStep,
-      action: () => claimMany.write({ tokenIds: tokenIds.map(id => BigInt(id)), unStake })
+      action: () => claimMany.write({ tokenIds: tokenIds.map(id => BigInt(id)), unStake, selectAll })
     },
     {
       stepElement: ClaimManySuccess,

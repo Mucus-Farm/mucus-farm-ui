@@ -3,20 +3,22 @@
 import { useState, useEffect } from 'react'
 import type { SetStateAction, Dispatch } from 'react'
 import dynamic from 'next/dynamic'
-import { useInfiniteQuery, useAccount } from 'wagmi'
+import { useInfiniteQuery, useAccount, useQuery } from 'wagmi'
+import { formatEther } from 'viem'
 import type { UseInfiniteQueryResult } from '@tanstack/react-query'
 
 // utils
-import { factionColorPalette as fcp } from './utils';
-import { env } from '@/env.mjs'
-import type { Owner } from '@/db/schema'
+import { factionColorPalette as fcp, getOwnedNfts, getNftImages, getType, getDailyYield, type Cursor, getTotalMucusFarmed } from './utils';
 import type { Faction } from '@/utils/constants'
+import type { Owner } from '@/db/schema'
+import { truncate } from '@/utils/helpers'
 
 // components
 import { Button } from "@/components/Button"
 import { ConnectWrapperSkeleton } from '@/components/ConnectWrapper'
 const ConnectWrapper = dynamic(() => import('@/components/ConnectWrapper'), { loading: () => <ConnectWrapperSkeleton className='justify-self-center bg-black/40 mx-auto w-24'/> })
 import Modal from '@/components/Modal'
+import Tooltip from '@/components/Tooltip'
 import { AddManyToMucusFarmTransaction } from '@/components/transactions/AddManyToMucusFarm'
 import { ClaimManyTransaction } from '@/components/transactions/ClaimMany'
 import { TransformTransaction } from '@/components/transactions/Transform'
@@ -24,44 +26,24 @@ import { TransformTransaction } from '@/components/transactions/Transform'
 // hooks
 import useFaction from '@/hooks/useFaction';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-
-type Cursor = number | undefined
-const getOwnedNfts = async (address: `0x${string}`, type: 'DOG' | 'FROG' | 'CHAD' | 'GIGA', cursor: Cursor) => {
-  const res = await fetch(`${env.NEXT_PUBLIC_HOST}/api/getOwnedNfts`, {
-    method: 'POST',
-    body: JSON.stringify({ address, type, cursor }),
-  })
-
-  return res.json() as Promise<{ nfts: Owner[], nextCursor: Cursor }>
-}
-
-const getNftImages = (Nfts: Owner[]) => Nfts.map(nft => ({
-  ...nft,
-  image: `${env.NEXT_PUBLIC_R2_WORKER_IMAGE_ENDPOINT}/${nft.id}`,
-}))
-
-export const getType = (faction, gigaOn) => {
-  if (faction === 'DOG' && !gigaOn) return 'DOG'
-  if (faction === 'FROG' && !gigaOn) return 'FROG'
-  if (faction === 'DOG' && gigaOn) return 'CHAD'
-  
-  return 'GIGA'
-}
+import { Checkbox } from '@/components/inputs/Checkbox'
+import Question from '@/images/icons/heroQuestion'
 
 type ContractMethodButtonsProps = {
   faction: Faction;
   selectedNfts: number[];
+  selectAll: boolean;
   setSelectedNfts: Dispatch<SetStateAction<number[]>>;
 }
-function ContractMethodButtons({ faction, selectedNfts, setSelectedNfts }: ContractMethodButtonsProps) {
+function ContractMethodButtons({ faction, selectedNfts, selectAll, setSelectedNfts }: ContractMethodButtonsProps) {
   const [showUpgrade, setShowUpgrade] = useState<boolean>(false)
   const [showStake, setShowStake] = useState<boolean>(false)
   const [showUnstake, setShowUnstake] = useState<boolean>(false)
   const [showClaim, setShowClaim] = useState<boolean>(false)
-  const [transactionValues, setTransactionValues] = useState<{ transformationType: Faction, tokenIds: number[] } | null>(null)
+  const [transactionValues, setTransactionValues] = useState<{ transformationType: Faction; tokenIds: number[]; selectAll: boolean; } | null>(null)
 
   const startTransaction = (setShow: Dispatch<SetStateAction<boolean>>) => {
-    setTransactionValues({ transformationType: faction, tokenIds: selectedNfts })
+    setTransactionValues({ transformationType: faction, tokenIds: selectedNfts, selectAll })
     setSelectedNfts([])
     setShow(true)
   }
@@ -78,7 +60,7 @@ function ContractMethodButtons({ faction, selectedNfts, setSelectedNfts }: Contr
         <ClaimManyTransaction {...transactionValues!} unStake onClose={() => setShowUnstake(false)} />
       </Modal>
       <Modal open={showClaim} onClose={() => setShowClaim(false)}>
-        <ClaimManyTransaction {...transactionValues!} unStake={false} onClose={() => setShowClaim(false)} />
+        <ClaimManyTransaction {...transactionValues!} selectAll unStake={false} onClose={() => setShowClaim(false)} />
       </Modal>
 
       <Button
@@ -112,14 +94,24 @@ function ContractMethodButtons({ faction, selectedNfts, setSelectedNfts }: Contr
   )
 }
 
-export default function Collection() {
-  const dailyYield = 9214.24
-  const totalYield = 55640.32
+const SelectAllTooltip = () => {
+  return (
+    <div className='text-center bg-[#1a1c28] w-[300px] rounded-lg px-4 py-2 break-all mb-1'>
+      applies to ALL frogs and dogs <br/>
+      (upgraded frogs and dogs too)
+    </div>
+  )
+}
 
+export default function Collection() {
   const [selectedNfts, setSelectedNfts] = useState<number[]>([])
   const [gigaOn, setGigaOn] = useState<boolean>(false)
+  const [selectAll, setSelectAll] = useState<boolean>(false)
   const { faction, setFaction } = useFaction(state => state)
   const { address } = useAccount()
+
+  const totalMucusFarmed = useQuery(['getTotalMucusFarmed', address], () => getTotalMucusFarmed(address!), { enabled: !!address, suspense: true })
+  const dailyYield = useQuery(['getDailyYield', address], () => getDailyYield(address!), { enabled: !!address, suspense: true })
   const ownedNfts = useInfiniteQuery(
     ['getOwnedNfts', faction, gigaOn, address],
     ({ pageParam }) => getOwnedNfts(address!, getType(faction, gigaOn), pageParam as Cursor),
@@ -127,6 +119,11 @@ export default function Collection() {
   )
   const { observer, lastElementRef: lastNftRef } = useIntersectionObserver(ownedNfts as unknown as UseInfiniteQueryResult)
   const allOwnedNfts = ownedNfts.data?.pages.reduce((acc, page) => [...acc, ...(page?.nfts ?? [])], [] as Owner[]) || []
+
+  const setSelectAllAndResetSelected = (checked: boolean) => {
+    setSelectAll(checked)
+    setSelectedNfts([])
+  }
 
   useEffect(() => {
     if (address) setSelectedNfts([]) 
@@ -148,12 +145,20 @@ export default function Collection() {
         <h2 onClick={() => setFaction('DOG')} className={`cursor-pointer text-2xl font-bold underline ${faction === 'DOG' ? fcp[faction].text : 'text-white/60' }`}>DOGS</h2>
       </div>
 
-      <div className='flex flex-grow px-4 mt-6 w-full'>
+      <div className='self-end flex items-center gap-x-2 mt-6 pr-5'>
+        <Tooltip tooltip={<SelectAllTooltip />} >
+          <Question className='w-4 h-4 -mr-1'/>
+        </Tooltip> 
+        <p className={`text-sm ${fcp[faction].text} font-bold`}>SELECT ALL</p>
+        <Checkbox name='selectAll' onClick={e => setSelectAllAndResetSelected((e.target as EventTarget & { checked: boolean }).checked )}/>
+      </div>
+
+      <div className='flex flex-grow px-4 w-full mt-2'>
         <div className='h-[350px] relative flex-grow flex flex-wrap p-10 gap-8 bg-black/25 rounded-xl overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent'>
           {getNftImages(allOwnedNfts).map(({ id, image, staked }, i) => (
             <div
               onClick={() => setSelectedNfts(prev => prev.includes(id) ? prev.filter(nftId => nftId !== id) : [...prev, id])}
-              className={`relative cursor-pointer border-2 overflow-hidden ${selectedNfts.includes(id) ? fcp[faction].border : 'border-white'} w-[100px] h-[100px]`}
+              className={`relative cursor-pointer border-2 overflow-hidden ${selectAll || selectedNfts.includes(id) ? fcp[faction].border : 'border-white'} w-[100px] h-[100px] transition-all`}
               ref={i === allOwnedNfts.length - 1 ? lastNftRef : undefined}
               key={id}
             >
@@ -176,18 +181,18 @@ export default function Collection() {
       <div className={`p-4 bg-black/25 rounded-xl gap-y-2 w-[400px] mt-2 text-sm ${fcp[faction].text}`}>
         <p>Mucus Generated</p>
         <div className='flex justify-between ml-4'>
-          <p>Daily</p>
-          <p>{dailyYield}</p>
+          <p>Daily Yield</p>
+          <p>{dailyYield?.data || '0'}</p>
         </div>
         <div className='flex justify-between ml-4'>
-          <p>Total</p>
-          <p>{totalYield}</p>
+          <p>Total Farmed</p>
+          <p>{truncate(formatEther(BigInt(totalMucusFarmed.data?.amount || '0')))}</p>
         </div>
       </div>
 
       <div className='flex w-[400px] px-4 mt-4'>
         <ConnectWrapper className={`justify-self-center bg-transparent mx-auto ${fcp[faction].text}`}>
-          <ContractMethodButtons faction={faction} selectedNfts={selectedNfts} setSelectedNfts={setSelectedNfts} />
+          <ContractMethodButtons faction={faction} selectedNfts={selectedNfts} selectAll={selectAll} setSelectedNfts={setSelectedNfts} />
         </ConnectWrapper>
       </div>
     </div>
