@@ -5,11 +5,10 @@ import { getPublicClient } from 'wagmi/actions' // TODO: if shifting this over a
 // utils
 import { env } from '@/env.mjs'
 import { fndAbi, fndAbiTypings } from '@/abis/fnd'
-import { computeMerkleProof } from '@/utils/helpers'
 
 // api
 import { queryClient } from '@/components/Providers'
-import { parseEther } from 'viem'
+import { parseEther, type Log } from 'viem'
 
 type Mint = {
   amount: number;
@@ -28,8 +27,12 @@ export const useWhitelistMint = () => {
   const write = async ({ amount }: Mint) => {
     if (!whitelistMint.writeAsync || !address) return
 
-    const proof = computeMerkleProof(address)
-    const tx = await whitelistMint.writeAsync({ args: [amount, stake, proof] })
+    const res = await fetch(`${env.NEXT_PUBLIC_HOST}/api/getProof`, {
+      method: 'POST',
+      body: JSON.stringify({ address }),
+    })
+    const { proof } = await (res.json() as Promise<{ proof: string[] }>)
+    const tx = await whitelistMint.writeAsync({ args: [amount, proof] })
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
     await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
@@ -69,6 +72,7 @@ export const useMint = () => {
 }
 
 export const useBreedAndAdopt = () => {
+  const { address } = useAccount()
   const breedAndAdopt = useContractWrite({
     address: env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS as `0x${string}`,
     abi: fndAbi,
@@ -79,12 +83,40 @@ export const useBreedAndAdopt = () => {
   const write = async ({ amount }: Mint) => {
     if (!breedAndAdopt.writeAsync) return
 
+    const minted = await getMinted()
     const tx = await breedAndAdopt.writeAsync({ args: [amount] })
-    const receipt = await waitForTransaction(tx)
+    await waitForTransaction(tx)
+
+    const tokenIds = await new Promise<{ stolen: boolean; tokenId: number; }[]>((resolve) => {
+      const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
+      
+      const unwatch = publicClient.watchContractEvent({
+        address: env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS as `0x${string}`,
+        abi: fndAbi,
+        eventName: 'Transfer',
+        args: {
+          from: '0x0000000000000000000000000000000000000000',
+          tokenId: [...Array(amount).keys()].map(i => Number(minted) + i),
+        },
+        onLogs: logs => {
+          console.log(logs)
+          const tokenIds = logs.map((log) => {
+            const { to, tokenId } = (log as Log & { args: { from: `0x${string}`, to: `0x${string}`, tokenId: bigint } })?.args
+            return {
+              stolen: to !== address,
+              tokenId: Number(tokenId),
+            }
+          })
+          unwatch()
+          resolve(tokenIds)
+        }
+      })
+    })
+
     await queryClient.invalidateQueries({ queryKey: ['getMinted'] })
     await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
 
-    return receipt
+    return tokenIds
   }
 
   return {
@@ -98,6 +130,7 @@ type Transform = {
   transformationType: number;
 }
 export const useTransform = () => {
+  const { address } = useAccount()
   const transform = useContractWrite({
     address: env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS as `0x${string}`,
     abi: fndAbi,
@@ -108,11 +141,32 @@ export const useTransform = () => {
   const write = async ({ tokenIds, transformationType }: Transform) => {
     if (!transform.writeAsync) return
 
-    const tx = await transform.writeAsync({ args: [tokenIds, transformationType, stake] })
-    const receipt = await waitForTransaction(tx)
+    const gigaChadsMinted = await getGigaChadsMinted(transformationType)
+    const tx = await transform.writeAsync({ args: [tokenIds, transformationType] })
+    await waitForTransaction(tx)
+
+    const transformSucceeded = await new Promise<boolean>((resolve) => {
+      const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
+      
+      const unwatch = publicClient.watchContractEvent({
+        address: env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS as `0x${string}`,
+        abi: fndAbi,
+        eventName: 'Transformation',
+        args: {
+          parent: address,
+          tokenId: gigaChadsMinted,
+        },
+        onLogs: logs => {
+          const transformSucceeded = logs[0]?.data.slice(-1) === '1'
+          unwatch()
+          resolve(transformSucceeded)
+        }
+      })
+    })
+
     await queryClient.invalidateQueries({ queryKey: ['getOwnedNfts'] })
 
-    return receipt
+    return { transformSucceeded }
   }
 
   return {
@@ -130,6 +184,17 @@ export const getMinted = async () => {
   })
 
   return minted
+}
+
+export const getGigaChadsMinted = async (faction: number) => {
+  const publicClient = getPublicClient({ chainId: Number(env.NEXT_PUBLIC_CHAIN_ID) });
+  const gigaChadsMinted = await publicClient.readContract({
+    address: env.NEXT_PUBLIC_FND_CONTRACT_ADDRESS as `0x${string}`,
+    abi: fndAbiTypings,
+    functionName: faction === 0 ? 'chadsMinted' : 'gigasMinted',
+  })
+
+  return gigaChadsMinted
 }
 
 export const getPublicMintStarted = async () => {

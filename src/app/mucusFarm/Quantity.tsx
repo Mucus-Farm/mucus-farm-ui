@@ -43,6 +43,7 @@ export default function Quantity() {
   const tokensPaidInEth = 2000;
   const totalSupply = publicMintStarted.data ? 6000 : 1000;
   const ethMintPrice = 0.001;
+  const mucusMintPrice = 6262;
 
   const { handleSubmit, register, watch, formState: { errors } } = useForm<QuantityInputs>({
     defaultValues: {
@@ -77,7 +78,7 @@ export default function Quantity() {
     if (Number(quantity) <= 0) {
       return 'MUST BE GREATER THAN ZERO'
     }
-    if (publicMintStarted.data && Number(minted.data) >= whitelistMintCap) {
+    if (!publicMintStarted.data && Number(minted.data) >= whitelistMintCap) {
       return 'HIT WHITELIST SALE LIMIT'
     }
     if (Number(minted.data) < tokensPaidInEth && Number(quantity) + Number(minted.data) > tokensPaidInEth) {
@@ -98,6 +99,8 @@ export default function Quantity() {
       || chain.id !== Number(env.NEXT_PUBLIC_CHAIN_ID)
       || quantity === ''
       || Number(quantity) <= 0
+      || !publicMintStarted.data && Number(minted.data) >= whitelistMintCap
+      || Number(minted.data) < tokensPaidInEth && Number(quantity) + Number(minted.data) > tokensPaidInEth
       || Number(quantity) + Number(minted.data) > totalSupply
       || Number(quantity) > 10
       || errors.quantity
@@ -114,7 +117,7 @@ export default function Quantity() {
         <div className='flex flex-col'>
           <NumberInput name='quantity' register={register} />
           <div className={`text-xs -mt-1 2xl:mt-0 text-white transition-all ease-linear duration-200 ${/^\s*(?=.*[1-9])\d*(?:\.\d+)?\s*$/.test(quantity) ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
-            {ethMintPrice * Number(quantity)} ETH
+            {minted.data && minted.data >= 2000 ? `${mucusMintPrice * Number(quantity)} MUCUS` : `${ethMintPrice * Number(quantity)} ETH`}
           </div>
         </div>
         <div className='text-mc-gray-50/50 text-sm 2xl:text-lg'>{Number(minted.data)}/{totalSupply}</div>

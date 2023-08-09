@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 'use client'
 
 import { useState, useEffect, type Dispatch, type SetStateAction } from 'react'
@@ -11,7 +12,7 @@ export type StepElementProps = {
 
 type Step = {
   skip?: boolean;
-  stepElement: (props: StepElementProps) => React.ReactNode;
+  stepElement: (props: any) => React.ReactNode;
   action?: () => Promise<any>;
 }
 type TransactionProps = Step & {
@@ -21,13 +22,15 @@ type TransactionProps = Step & {
 }
 const Transaction = ({ skip, step, stepElement, setStep, action, onClose }: TransactionProps) => {
   const { transactionState: status, setTransactionState, setErrorMessage } = useTransactions((state) => state)
+  const [props, setProps] = useState<any>(null)
 
   const triggerAction = async () => {
     try {
       if (!action) return
       setTransactionState('PENDING')
-      await action()
+      const nextProps = await action()
 
+      setProps(nextProps)
       setTransactionState('SUCCESS')
       setStep((prevStep) => prevStep + 1)
     } catch (error: any) {
@@ -41,7 +44,8 @@ const Transaction = ({ skip, step, stepElement, setStep, action, onClose }: Tran
     else triggerAction().catch(error => console.error(error))
   }, [step])
 
-  return stepElement({ retry: triggerAction, onClose, status })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return stepElement({ ...props, retry: triggerAction, onClose, status })
 }
 
 type TransactionModalProps = { steps: Step[]; isLoading: boolean; onClose: () => void; Skeleton: () => React.ReactNode}

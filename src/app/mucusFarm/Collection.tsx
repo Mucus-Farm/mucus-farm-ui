@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import type { SetStateAction, Dispatch } from 'react'
 import dynamic from 'next/dynamic'
 import { useInfiniteQuery, useAccount } from 'wagmi'
 import type { UseInfiniteQueryResult } from '@tanstack/react-query'
@@ -48,53 +49,61 @@ export const getType = (faction, gigaOn) => {
 }
 
 type ContractMethodButtonsProps = {
-  faction: Faction,
-  selectedNfts: number[],
+  faction: Faction;
+  selectedNfts: number[];
+  setSelectedNfts: Dispatch<SetStateAction<number[]>>;
 }
-function ContractMethodButtons({ faction, selectedNfts }: ContractMethodButtonsProps) {
+function ContractMethodButtons({ faction, selectedNfts, setSelectedNfts }: ContractMethodButtonsProps) {
   const [showUpgrade, setShowUpgrade] = useState<boolean>(false)
   const [showStake, setShowStake] = useState<boolean>(false)
   const [showUnstake, setShowUnstake] = useState<boolean>(false)
   const [showClaim, setShowClaim] = useState<boolean>(false)
+  const [transactionValues, setTransactionValues] = useState<{ transformationType: Faction, tokenIds: number[] } | null>(null)
+
+  const startTransaction = (setShow: Dispatch<SetStateAction<boolean>>) => {
+    setTransactionValues({ transformationType: faction, tokenIds: selectedNfts })
+    setSelectedNfts([])
+    setShow(true)
+  }
 
   return (
     <div className='flex-grow flex justify-between'>
       <Modal open={showUpgrade} onClose={() => setShowUpgrade(false)}>
-        <TransformTransaction tokenIds={selectedNfts} transformationType={faction} stake={false /*TODO: decide what to do here*/} onClose={() => setShowUpgrade(false)} />
+        <TransformTransaction {...transactionValues!} onClose={() => setShowUpgrade(false)} />
       </Modal>
       <Modal open={showStake} onClose={() => setShowStake(false)}>
-        <AddManyToMucusFarmTransaction tokenIds={selectedNfts} onClose={() => setShowStake(false)} />
+        <AddManyToMucusFarmTransaction {...transactionValues!} onClose={() => setShowStake(false)} />
       </Modal>
       <Modal open={showUnstake} onClose={() => setShowUnstake(false)}>
-        <ClaimManyTransaction tokenIds={selectedNfts} unStake onClose={() => setShowUnstake(false)} />
+        <ClaimManyTransaction {...transactionValues!} unStake onClose={() => setShowUnstake(false)} />
       </Modal>
       <Modal open={showClaim} onClose={() => setShowClaim(false)}>
-        <ClaimManyTransaction tokenIds={selectedNfts} unStake={false} onClose={() => setShowClaim(false)} />
+        <ClaimManyTransaction {...transactionValues!} unStake={false} onClose={() => setShowClaim(false)} />
       </Modal>
 
       <Button
-        onClick={() => setShowUpgrade(true)}
+        onClick={() => startTransaction(setShowUpgrade)}
         className={`px-2 py-1 ${fcp[faction].bg} text-sm border border-white text-white font-normal`}
       >
         Upgrade
       </Button>
 
       <Button
-        onClick={() => setShowStake(true)}
+        onClick={() => startTransaction(setShowStake)}
         className={`px-2 py-1 ${fcp[faction].bg} text-sm border border-white text-white font-normal`}
       >
         Stake
       </Button>
 
       <Button
-        onClick={() => setShowUnstake(true)}
+        onClick={() => startTransaction(setShowUnstake)}
         className={`px-2 py-1 ${fcp[faction].bg} text-sm border border-white text-white font-normal`}
       >
         Unstake
       </Button>
 
       <Button
-        onClick={() => setShowClaim(true)}
+        onClick={() => startTransaction(setShowClaim)}
         className={`px-2 py-1 bg-white text-sm border ${fcp[faction].border} ${fcp[faction].text} font-normal`}
       >
         Claim
@@ -119,7 +128,9 @@ export default function Collection() {
   const { observer, lastElementRef: lastNftRef } = useIntersectionObserver(ownedNfts as unknown as UseInfiniteQueryResult)
   const allOwnedNfts = ownedNfts.data?.pages.reduce((acc, page) => [...acc, ...(page?.nfts ?? [])], [] as Owner[]) || []
 
-  console.log("owned NFTs: ", ownedNfts)
+  useEffect(() => {
+    if (address) setSelectedNfts([]) 
+  }, [gigaOn, faction, address])
 
   return (
     <div className={`flex-grow relative flex flex-col items-center p-4 rounded-xl bg-mc-black-500 ${fcp[faction].text}`} >
@@ -176,7 +187,7 @@ export default function Collection() {
 
       <div className='flex w-[400px] px-4 mt-4'>
         <ConnectWrapper className={`justify-self-center bg-transparent mx-auto ${fcp[faction].text}`}>
-          <ContractMethodButtons faction={faction} selectedNfts={selectedNfts} />
+          <ContractMethodButtons faction={faction} selectedNfts={selectedNfts} setSelectedNfts={setSelectedNfts} />
         </ConnectWrapper>
       </div>
     </div>

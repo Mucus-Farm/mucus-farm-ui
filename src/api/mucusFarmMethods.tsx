@@ -1,4 +1,4 @@
-import { useContractWrite, useAccount } from 'wagmi'
+import { useContractWrite } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
 import { queryClient } from '@/components/Providers'
 
@@ -10,7 +10,6 @@ type AddManyToMucusFarm = {
   tokenIds: bigint[]
 }
 export const useAddManyToMucusFarm = () => {
-  const { address } = useAccount()
   const addManyToMucusFarm = useContractWrite({
     address: env.NEXT_PUBLIC_MUCUS_FARM_CONTRACT_ADDRESS as `0x${string}`,
     abi: mucusFarmAbi,
@@ -19,9 +18,9 @@ export const useAddManyToMucusFarm = () => {
   })
 
   const write = async ({ tokenIds }: AddManyToMucusFarm) => {
-    if (!addManyToMucusFarm.writeAsync || !address) return
+    if (!addManyToMucusFarm.writeAsync) return
 
-    const tx = await addManyToMucusFarm.writeAsync({ args: [address, tokenIds] })
+    const tx = await addManyToMucusFarm.writeAsync({ args: [tokenIds] })
     const receipt = await waitForTransaction(tx)
     await queryClient.invalidateQueries(['getOwnedNfts'])
 

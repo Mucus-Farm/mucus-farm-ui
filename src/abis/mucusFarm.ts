@@ -1,4 +1,4 @@
-export const mucusFarmAbi =  [
+export const mucusFarmAbi = [
   {
     "inputs": [
       {
@@ -507,4 +507,4 @@ export const mucusFarmAbi =  [
     "stateMutability": "view",
     "type": "function"
   }
-]
+] 

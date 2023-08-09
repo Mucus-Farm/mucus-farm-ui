@@ -153,44 +153,6 @@ export const fndAbi = [
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "RequestId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RequestFulfilled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "RequestId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RequestSent",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "address",
         "name": "from",
         "type": "address"
@@ -209,6 +171,31 @@ export const fndAbi = [
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "parent",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "transformSucceeded",
+        "type": "bool"
+      }
+    ],
+    "name": "Transformation",
     "type": "event"
   },
   {
@@ -371,11 +358,6 @@ export const fndAbi = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       }
     ],
     "name": "breedAndAdopt",
@@ -497,11 +479,6 @@ export const fndAbi = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       }
     ],
     "name": "mint",
@@ -671,16 +648,6 @@ export const fndAbi = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "fulfilled",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       },
       {
         "internalType": "bool",
@@ -940,11 +907,6 @@ export const fndAbi = [
         "internalType": "enum IFrogsAndDogs.Faction",
         "name": "transformationType",
         "type": "uint8"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       }
     ],
     "name": "transform",
@@ -973,11 +935,6 @@ export const fndAbi = [
         "type": "uint256"
       },
       {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
-      },
-      {
         "internalType": "bytes32[]",
         "name": "proof",
         "type": "bytes32[]"
@@ -1002,32 +959,13 @@ export const fndAbi = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "whitelistMinted",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }
-]
+] 
 
 export const fndAbiTypings = [
   {
@@ -1184,44 +1122,6 @@ export const fndAbiTypings = [
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "RequestId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RequestFulfilled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "RequestId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RequestSent",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "address",
         "name": "from",
         "type": "address"
@@ -1240,6 +1140,31 @@ export const fndAbiTypings = [
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "parent",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "transformSucceeded",
+        "type": "bool"
+      }
+    ],
+    "name": "Transformation",
     "type": "event"
   },
   {
@@ -1402,11 +1327,6 @@ export const fndAbiTypings = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       }
     ],
     "name": "breedAndAdopt",
@@ -1528,11 +1448,6 @@ export const fndAbiTypings = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       }
     ],
     "name": "mint",
@@ -1702,16 +1617,6 @@ export const fndAbiTypings = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "fulfilled",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       },
       {
         "internalType": "bool",
@@ -1971,11 +1876,6 @@ export const fndAbiTypings = [
         "internalType": "enum IFrogsAndDogs.Faction",
         "name": "transformationType",
         "type": "uint8"
-      },
-      {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
       }
     ],
     "name": "transform",
@@ -2004,11 +1904,6 @@ export const fndAbiTypings = [
         "type": "uint256"
       },
       {
-        "internalType": "bool",
-        "name": "stake",
-        "type": "bool"
-      },
-      {
         "internalType": "bytes32[]",
         "name": "proof",
         "type": "bytes32[]"
@@ -2022,25 +1917,6 @@ export const fndAbiTypings = [
   {
     "inputs": [],
     "name": "whitelistMintSupply",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "whitelistMinted",
     "outputs": [
       {
         "internalType": "uint256",

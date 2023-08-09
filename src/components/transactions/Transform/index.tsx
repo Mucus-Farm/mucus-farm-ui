@@ -26,11 +26,11 @@ export function TransformTransactionStep({ status, retry }: StepElementProps) {
   )
 }
 
-export function TransformSuccess() {
+export function TransformSuccess({ transformSucceeded }) {
   return (
     <div className='flex flex-col justify-center items-center rounded-lg bg-mc-gray-200 p-8 max-w-[500px] border-2 border-white'>
       <img width={200} height={200} src={`${env.NEXT_PUBLIC_CF_IMAGES_URL_BASE}/a21f163c-093e-45a2-2a43-0e89470cf400/public`} alt='fndTrading' />
-      <p className='text-mc-brown-500 text-lg mt-6'>SUCCESS</p>
+      <p className='text-mc-brown-500 text-lg mt-6'>{transformSucceeded ? 'SUCCESS' : 'FAILED'}</p>
     </div>
   )
 }
@@ -38,10 +38,9 @@ export function TransformSuccess() {
 export type TransformValues = {
   tokenIds: number[];
   transformationType: Faction;
-  stake: boolean;
 }
 type TransformTransactionProps = TransformValues & { onClose: () => void; }
-export const TransformTransaction = ({ tokenIds, transformationType, stake, onClose }: TransformTransactionProps) => {
+export const TransformTransaction = ({ tokenIds, transformationType, onClose }: TransformTransactionProps) => {
   const transform = useTransform()
 
   const steps = [
@@ -50,7 +49,6 @@ export const TransformTransaction = ({ tokenIds, transformationType, stake, onCl
       action: () => transform.write({ 
         tokenIds: tokenIds.map(id => BigInt(id)),
         transformationType: transformationType === 'DOG' ? 0 : 1,
-        stake,
       })
     },
     {

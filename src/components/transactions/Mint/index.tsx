@@ -51,7 +51,7 @@ const useMintAction = ({ publicMintStarted, minted }: { publicMintStarted: boole
 
   if (!publicMintStarted) return whitelistMint
 
-  if (minted > tokensPaidInEth) return breedAndAdopt
+  if (minted >= tokensPaidInEth) return breedAndAdopt
 
   return mint
 }
