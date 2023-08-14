@@ -1,31 +1,38 @@
 'use client'
 
+import { twMerge } from "tailwind-merge";
+
 // components
 import { Button } from "@/components/Button";
 
 // Icons
 import Twitter from "@/images/icons/twitter"
 import Discord from "@/images/icons/discord"
+import Etherscan from "@/images/icons/etherscan"
 
 type IconHolderProps = {
   children: React.ReactNode;
+  className?: string;
   href?: string;
   onClick?: () => void;
 }
-const IconHolder = ({ children, href, onClick }: IconHolderProps) => (
-  <Button className='px-6 border-2 border-white rounded-lg bg-mc-brown-300/90 hover:bg-mc-brown-300/80 active:bg-mc-brown-300' href={href} onClick={onClick} >
+const IconHolder = ({ children, className, href, onClick }: IconHolderProps) => (
+  <Button className={twMerge('px-6 border-2 border-white rounded-lg bg-mc-brown-300/90 hover:bg-mc-brown-300/80 active:bg-mc-brown-300', className)} href={href} onClick={onClick} >
     {children}
   </Button>
 )
 
-export default function SocialLinks() {
+export default function SocialLinks({ iconHolderClassName }: { iconHolderClassName?: string }) {
   return (
     <>
-      <IconHolder onClick={() => window.open('https://twitter.com/mucushq', '_blank')} >
+      <IconHolder className={iconHolderClassName} onClick={() => window.open('https://twitter.com/mucushq', '_blank')} >
         <Twitter className='h-6 w-6 fill-white' />
       </IconHolder>
-      <IconHolder onClick={() => window.open('https://discord.gg/xHctHNgf', '_blank')} >
+      <IconHolder className={iconHolderClassName} onClick={() => window.open('https://discord.gg/xHctHNgf', '_blank')} >
         <Discord className='h-6 w-6 fill-white' />
+      </IconHolder>
+      <IconHolder className={iconHolderClassName} onClick={() => window.open('https://etherscan.io/', '_blank')} >
+        <Etherscan className='h-6 w-6 fill-white' />
       </IconHolder>
     </> 
   )

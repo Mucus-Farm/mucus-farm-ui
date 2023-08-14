@@ -2,6 +2,7 @@
 
 import { QueryClient } from "@tanstack/react-query";
 import NextTopLoader from 'nextjs-toploader'
+import { useMediaQuery } from 'react-responsive'
 import '@rainbow-me/rainbowkit/styles.css';
 import { env } from "@/env.mjs";
 
@@ -16,6 +17,7 @@ import {
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { alchemyProvider } from 'wagmi/providers/alchemy'
+import MobileNotReady from "./MobileNotReady";
 
 // components & hooks
 import useTransactions from '@/hooks/useTransactions';
@@ -44,8 +46,14 @@ const wagmiConfig = createConfig({
   publicClient
 })
 
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const { transactionState, errorMessage } = useTransactions((state) => state)
+  const isMobile = useMediaQuery({ maxWidth: 767 })
+
+  if (isMobile) {
+    return <MobileNotReady />
+  }
 
   return (
     <WagmiConfig config={wagmiConfig}>
