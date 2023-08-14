@@ -30,7 +30,7 @@ export default function UserStats({ faction }: UserStatsProps) {
       <p className='text-white text-center 2xl:text-lg xl:text-md'>{faction === 'DOG' ? 'A SIMPLE GIVE AND TAKE' : 'PROTECT US AND WE OWE YOU'}</p>
 
       <div className={`flex justify-between mt-6 2xl:mt-12 xl:mt-8 ${fcp[faction].text} text-sm`}>
-        <p>Total Deposited <span className='font-bold'>{totalDeposited && lpTokenUsdcPrice ? currencyFormat.format(totalDeposited * lpTokenUsdcPrice) : 'N/A'}</span></p>
+        <p>Total Deposited <span className='font-bold'>{totalDeposited && lpTokenUsdcPrice ? `${totalDeposited?.toString()?.split('.')?.[0] || 0} LP` : 'N/A'}</span></p>
         <p>Staker Trading Rewards <span className='font-bold'>{staker ? `${stakerTradingRewards} %` : 'N/A'}</span></p>
         <p>Your Deposit <span className='font-bold'>{userDeposit !== undefined ? `${Math.floor(Number(formatEther(userDeposit)))} LP` : 'N/A'}</span></p>
       </div>
