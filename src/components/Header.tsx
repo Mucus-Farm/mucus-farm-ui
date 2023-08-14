@@ -9,7 +9,7 @@ import { ConnectButton } from "@/components/ConnectButton"
 
 // Icons
 import Question from "@/images/icons/question"
-import Paper from "@/images/icons/paper"
+// import Paper from "@/images/icons/paper"
 
 type IconHolderProps = {
   children: React.ReactNode;
