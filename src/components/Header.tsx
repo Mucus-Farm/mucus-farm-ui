@@ -32,9 +32,9 @@ export default function Header() {
             <IconHolder href='/about' >
               <Question className='h-6 w-6 fill-white' />
             </IconHolder>
-            <IconHolder href='/whitepaper'>
+            {/* <IconHolder href='/whitepaper'>
               <Paper className='h-6 w-6 fill-white' />
-            </IconHolder>
+            </IconHolder> */}
             <Clock />
           </div>
 
