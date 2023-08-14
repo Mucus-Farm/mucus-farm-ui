@@ -31,7 +31,7 @@ export default function SocialLinks({ iconHolderClassName }: { iconHolderClassNa
       <IconHolder className={iconHolderClassName} onClick={() => window.open('https://discord.gg/xHctHNgf', '_blank')} >
         <Discord className='h-6 w-6 fill-white' />
       </IconHolder>
-      <IconHolder className={iconHolderClassName} onClick={() => window.open('https://etherscan.io/', '_blank')} >
+      <IconHolder className={iconHolderClassName} onClick={() => window.open('https://etherscan.io/address/0xC4a41fc62BFc4eD3033CfF4bEFD21bbDcd811F64', '_blank')} >
         <Etherscan className='h-6 w-6 fill-white' />
       </IconHolder>
     </> 
