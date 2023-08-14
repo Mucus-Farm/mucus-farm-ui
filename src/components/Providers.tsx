@@ -24,7 +24,7 @@ import useTransactions from '@/hooks/useTransactions';
 import { SuccessToast, FailToast } from "@/components/Toast";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, goerli],
+  [mainnet],
   [
     publicProvider(),
     alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
